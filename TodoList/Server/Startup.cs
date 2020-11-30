@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using TodoList.Server.Models;
+using TodoList.Server.Repositories;
 
 namespace TodoList.Server
 {
@@ -30,6 +31,8 @@ namespace TodoList.Server
 
             services.AddDbContext<TodoContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TodoListConnection")));
+
+            services.AddScoped<ITodoRepository, TodoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
