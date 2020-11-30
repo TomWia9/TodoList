@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using TodoList.Server.Models;
 
 namespace TodoList.Server
 {
@@ -25,6 +27,9 @@ namespace TodoList.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<TodoContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("TodoListConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

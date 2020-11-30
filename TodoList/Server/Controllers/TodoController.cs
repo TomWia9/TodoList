@@ -10,7 +10,7 @@ namespace TodoList.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Todo : ControllerBase
+    public class TodoController : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoDTO>>> GetAllTodos()
