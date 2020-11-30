@@ -1,0 +1,26 @@
+﻿@page "/all" 
+@inherits AllTodoBase
+
+<h2>All</h2>
+<h3>(@Todos.Count(todo => !todo.IsDone) todo not completed)</h3>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Is done</th>
+    </tr>
+
+    @foreach (var todo in Todos)
+	{
+		 <tr>
+             <td>@todo.Id</td>
+             <td>@todo.Title</td>
+             <td>@todo.Description</td>
+             <td>
+                 <input type="checkbox" @bind="todo.IsDone" />
+             </td>
+         </tr>
+	}
+</table>
+
