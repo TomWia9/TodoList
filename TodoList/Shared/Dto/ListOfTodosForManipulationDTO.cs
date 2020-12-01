@@ -9,6 +9,6 @@ namespace TodoList.Shared.Dto
     public abstract class  ListOfTodosForManipulationDTO
     {
         public string Title { get; set; }
-        public IEnumerable<TodoDTO> Todos { get; set; }
+
     }
 }

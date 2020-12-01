@@ -12,7 +12,7 @@ using TodoList.Shared.Dto;
 
 namespace TodoList.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/lists/{listOfTodosId}/[controller]")]
     [ApiController]
     public class TodosController : ControllerBase
     {
@@ -28,16 +28,22 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoDTO>> NewTodo(TodoForCreationDTO todo)
+        public async Task<ActionResult<TodoDTO>> NewTodo(int listOfTodosId, TodoForCreationDTO todo)
         {
             try
             {
+                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
                 var newTodo = _mapper.Map<Todo>(todo);
+                newTodo.ListOfTodosId = listOfTodosId;
                 _dbRepository.Add(newTodo);
 
                 if (await _dbRepository.SaveChangesAsync())
                 {
-                    return CreatedAtAction(nameof(GetTodo), new { todoId = newTodo.Id }, _mapper.Map<TodoDTO>(newTodo));
+                    return CreatedAtAction(nameof(GetTodoOfList), new { listOfTodosId = listOfTodosId, todoId = newTodo.Id }, _mapper.Map<TodoDTO>(newTodo));
                 }
             }
 
@@ -51,11 +57,16 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable>> GetTodos()
+        public async Task<ActionResult<IEnumerable>> GetTodosOfList(int listOfTodosId)
         {
             try
             {
-                var todos = await _todoRepository.GetTodosAsync();
+                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
+                var todos = await _todoRepository.GetTodosAsync(listOfTodosId);
                 if (todos != null)
                 {
                     return Ok(_mapper.Map<IEnumerable<TodoDTO>>(todos));
@@ -70,11 +81,16 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpGet("{todoId}")]
-        public async Task<ActionResult<IEnumerable>> GetTodo(int todoId)
+        public async Task<ActionResult<IEnumerable>> GetTodoOfList(int listOfTodosId, int todoId)
         {
             try
             {
-                var todo = await _todoRepository.GetTodoAsync(todoId);
+                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
+                var todo = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
                 if (todo != null)
                 {
                     return Ok(_mapper.Map<TodoDTO>(todo));
@@ -89,11 +105,16 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPut("{todoId}")]
-        public async Task<IActionResult> UpdateTodo(int todoId, TodoForUpdateDTO todo)
+        public async Task<IActionResult> UpdateTodo(int listOfTodosId, int todoId, TodoForUpdateDTO todo)
         {
             try
             {
-                var todoFromRepo = await _todoRepository.GetTodoAsync(todoId);
+                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
+                var todoFromRepo = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
 
                 if (todoFromRepo == null)
                 {
@@ -119,11 +140,16 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPatch("{todoId}")]
-        public async Task<IActionResult> PartiallyUpdateTodo(int todoId, JsonPatchDocument<TodoForUpdateDTO> patchDocument)
+        public async Task<IActionResult> PartiallyUpdateTodo(int listOfTodosId, int todoId, JsonPatchDocument<TodoForUpdateDTO> patchDocument)
         {
             try
             {
-                var todoFromRepo = await _todoRepository.GetTodoAsync(todoId);
+                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
+                var todoFromRepo = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
 
                 if (todoFromRepo == null)
                 {
@@ -149,11 +175,16 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpDelete("{todoId}")]
-        public async Task<IActionResult> DeleteTodo(int todoId)
+        public async Task<IActionResult> DeleteTodo(int listOfTodosId, int todoId)
         {
             try
             {
-                var todoToRemove = await _todoRepository.GetTodoAsync(todoId);
+                if (! await _todoRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
+                var todoToRemove = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
 
                 if(todoToRemove == null)
                 {

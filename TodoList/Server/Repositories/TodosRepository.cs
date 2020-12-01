@@ -16,14 +16,19 @@ namespace TodoList.Server.Repositories
             _context = context;
         }
 
-        public async Task<Todo> GetTodoAsync(int todoId)
+        public async Task<Todo> GetTodoAsync(int listOfTodosId, int todoId)
         {
-            return await _context.Todos.FindAsync(todoId);
+            return await _context.Todos.FirstOrDefaultAsync(t => t.ListOfTodosId == listOfTodosId && t.Id == todoId);
         }
 
-        public async Task<IEnumerable<Todo>> GetTodosAsync()
+        public async Task<IEnumerable<Todo>> GetTodosAsync(int listOfTodosId)
         {
-            return await _context.Todos.ToListAsync();
+            return await _context.Todos.Where(t => t.ListOfTodosId == listOfTodosId).ToListAsync();
+        }
+
+        public async Task<bool> ListOfTodosExists(int listOfTodosId)
+        {
+            return await _context.ListsOfTodos.AnyAsync(l => l.Id == listOfTodosId);
         }
 
         public void UpdateTodo(Todo todo)

@@ -8,8 +8,9 @@ namespace TodoList.Server.Repositories
 {
     public interface ITodosRepository
     {
-        Task<IEnumerable<Todo>> GetTodosAsync();
-        Task<Todo> GetTodoAsync(int todoId);
+        Task<IEnumerable<Todo>> GetTodosAsync(int listOfTodosId);
+        Task<Todo> GetTodoAsync(int listOfTodosId, int todoId);
+        Task<bool> ListOfTodosExists(int listOfTodosId);
         void UpdateTodo(Todo todo);
 
     }

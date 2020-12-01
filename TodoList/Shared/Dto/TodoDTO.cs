@@ -12,5 +12,7 @@ namespace TodoList.Shared.Dto
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsDone { get; set; }
+        public int ListOfTodosId { get; set; }
+
     }
 }

@@ -18,12 +18,12 @@ namespace TodoList.Server.Repositories
 
         public async Task<ListOfTodos> GetTodoListAsync(int todoListId)
         {
-            return await _context.ListsOfTodos.FindAsync(todoListId);
+            return await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
         }
 
         public async Task<IEnumerable<ListOfTodos>> GetTodoListsAsync()
         {
-            return await _context.ListsOfTodos.ToListAsync();
+            return await _context.ListsOfTodos.Include(l => l.Todos).ToListAsync();
         }
 
         public void UpdateTodoList(ListOfTodos listOfTodos)
