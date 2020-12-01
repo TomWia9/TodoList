@@ -39,8 +39,9 @@ namespace TodoList.Server
             services.AddDbContext<TodoContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TodoListConnection")));
 
-            services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped<ITodosRepository, TodosRepository>();
             services.AddScoped<IDbRepository, DbRepository>();
+            services.AddScoped<ITodoListsRepository, TodoListsRepository>();
 
             services.AddAutoMapper(typeof(Startup));
 

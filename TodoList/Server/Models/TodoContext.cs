@@ -12,5 +12,6 @@ namespace TodoList.Server.Models
         {
         }
         public DbSet<Todo> Todos { get; set; }
+        public DbSet<ListOfTodos> ListsOfTodos { get; set; }
     }
 }

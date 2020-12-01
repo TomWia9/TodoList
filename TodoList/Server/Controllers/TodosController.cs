@@ -16,11 +16,11 @@ namespace TodoList.Server.Controllers
     [ApiController]
     public class TodosController : ControllerBase
     {
-        private readonly ITodoRepository _todoRepository;
+        private readonly ITodosRepository _todoRepository;
         private readonly IDbRepository _dbRepository;
         private readonly IMapper _mapper;
 
-        public TodosController(ITodoRepository todoRepository, IDbRepository dbRepository, IMapper mapper)
+        public TodosController(ITodosRepository todoRepository, IDbRepository dbRepository, IMapper mapper)
         {
             _todoRepository = todoRepository;
             _dbRepository = dbRepository;

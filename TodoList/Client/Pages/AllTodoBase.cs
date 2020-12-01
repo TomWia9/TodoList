@@ -17,7 +17,7 @@ namespace TodoList.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Todos = await HttpClient.GetFromJsonAsync<IEnumerable<TodoDTO>>("api/todo");
+            Todos = await HttpClient.GetFromJsonAsync<IEnumerable<TodoDTO>>("api/todos");
         }
     }
 }

@@ -6,13 +6,10 @@ using TodoList.Server.Models;
 
 namespace TodoList.Server.Repositories
 {
-    public interface ITodoRepository
+    public interface ITodosRepository
     {
         Task<IEnumerable<Todo>> GetTodosAsync();
         Task<Todo> GetTodoAsync(int todoId);
-        void Add<T>(T entity) where T : class;
-        void Remove<T>(T entity) where T : class;
-        Task<bool> SaveChangesAsync();
         void UpdateTodo(Todo todo);
 
     }
