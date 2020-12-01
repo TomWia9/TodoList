@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
@@ -39,7 +39,7 @@ namespace TodoList.Server.Controllers
                 }
             }
 
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
             }
@@ -84,6 +84,95 @@ namespace TodoList.Server.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpPut("{todoId}")]
+        public async Task<IActionResult> UpdateTodo(int todoId, TodoForUpdateDTO todo)
+        {
+            try
+            {
+                var todoFromRepo = await _todoRepository.GetTodoAsync(todoId);
+
+                if (todoFromRepo == null)
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(todo, todoFromRepo);
+                _todoRepository.UpdateTodo(todoFromRepo);
+
+                if (await _todoRepository.SaveChangesAsync())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+
+        }
+
+        [HttpPatch("{todoId}")]
+        public async Task<IActionResult> PartiallyUpdateTodo(int todoId, JsonPatchDocument<TodoForUpdateDTO> patchDocument)
+        {
+            try
+            {
+                var todoFromRepo = await _todoRepository.GetTodoAsync(todoId);
+
+                if (todoFromRepo == null)
+                {
+                    return NotFound();
+                }
+
+                var todoToPatch = _mapper.Map<TodoForUpdateDTO>(todoFromRepo);
+                patchDocument.ApplyTo(todoToPatch, ModelState);
+                _mapper.Map(todoToPatch, todoFromRepo);
+                _todoRepository.UpdateTodo(todoFromRepo);
+
+                if (await _todoRepository.SaveChangesAsync())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{todoId}")]
+        public async Task<IActionResult> DeleteTodo(int todoId)
+        {
+            try
+            {
+                var todoToRemove = await _todoRepository.GetTodoAsync(todoId);
+
+                if(todoToRemove == null)
+                {
+                    return NotFound();
+                }
+
+                _todoRepository.Remove(todoToRemove);
+
+                if(await _todoRepository.SaveChangesAsync())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+
         }
     }
 }

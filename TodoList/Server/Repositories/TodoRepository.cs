@@ -15,11 +15,6 @@ namespace TodoList.Server.Repositories
         {
             _context = context;
         }
-        
-        public void Add<T>(T entity) where T : class
-        {
-            _context.Add(entity);
-        }
 
         public async Task<Todo> GetTodoAsync(int todoId)
         {
@@ -31,6 +26,11 @@ namespace TodoList.Server.Repositories
             return await _context.Todos.ToListAsync();
         }
 
+        public void Add<T>(T entity) where T : class
+        {
+            _context.Add(entity);
+        }
+
         public void Remove<T>(T entity) where T : class
         {
             _context.Remove(entity);
@@ -39,6 +39,11 @@ namespace TodoList.Server.Repositories
         public async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public void UpdateTodo(Todo todo)
+        {
+            //no code in this implementation
         }
     }
 }

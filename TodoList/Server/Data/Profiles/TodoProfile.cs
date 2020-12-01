@@ -14,6 +14,8 @@ namespace TodoList.Server.Data.Profiles
         {
             CreateMap<Todo, TodoDTO>();
             CreateMap<TodoForCreationDTO, Todo>();
+            CreateMap<TodoForUpdateDTO, Todo>();
+            CreateMap<Todo, TodoForUpdateDTO>();
         }
     }
 }

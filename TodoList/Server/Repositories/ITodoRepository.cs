@@ -13,6 +13,7 @@ namespace TodoList.Server.Repositories
         void Add<T>(T entity) where T : class;
         void Remove<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
+        void UpdateTodo(Todo todo);
 
     }
 }
