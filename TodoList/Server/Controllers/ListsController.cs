@@ -65,5 +65,83 @@ namespace TodoList.Server.Controllers
 
             return NotFound();
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ListOfTodosDTO>>> GetTodoLists()
+        {
+            try
+            {
+                var todoLists = await _todoListsRepository.GetTodoListsAsync();
+                if (todoLists != null)
+                {
+                    return Ok(_mapper.Map<IEnumerable<ListOfTodosDTO>>(todoLists));
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return NotFound();
+        }
+
+        [HttpPut("{listOfTodosId}")]
+        public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDTO listofTodos)
+        {
+            try
+            {
+                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+
+                if (listOfTodosFromRepo == null)
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(listofTodos, listOfTodosFromRepo);
+                _todoListsRepository.UpdateTodoList(listOfTodosFromRepo);
+
+                if (await _dbRepository.SaveChangesAsync())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+
+        }
+
+        [HttpDelete("{listOfTodosId}")]
+        public async Task<IActionResult> DeleteListOfTodos(int listOfTodosId)
+        {
+            try
+            {
+                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+
+                if(listOfTodosToRemove == null)
+                {
+                    return NotFound();
+                }
+
+                _dbRepository.Remove(listOfTodosToRemove);
+
+                if(await _dbRepository.SaveChangesAsync())
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return BadRequest();
+
+        }
     }
 }
