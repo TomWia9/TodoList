@@ -13,11 +13,17 @@ namespace TodoList.Client.Pages
     {
         [Inject]
         protected HttpClient HttpClient { get; set; }
-        public IEnumerable<TodoDTO> Todos { get; set; } = new List<TodoDTO>();
+        public IEnumerable<ListOfTodosDTO> ListOfTodos { get; set; } = new List<ListOfTodosDTO>();
+        public int NumberOfIncompletedTodos { get; set; } = 0;
 
         protected override async Task OnInitializedAsync()
         {
-            Todos = await HttpClient.GetFromJsonAsync<IEnumerable<TodoDTO>>("api/todos");
+            ListOfTodos = await HttpClient.GetFromJsonAsync<IEnumerable<ListOfTodosDTO>>("api/lists");
+
+            foreach (var list in ListOfTodos)
+            {
+                NumberOfIncompletedTodos += list.Todos.Count(t => !t.IsDone);
+            }
         }
     }
 }

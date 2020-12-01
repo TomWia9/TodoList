@@ -1,26 +1,37 @@
-﻿@page "/all" 
+﻿@page "/all"
 @inherits AllTodoBase
 
-<h2>All</h2>
-<h3>(@Todos.Count(todo => !todo.IsDone) todo not completed)</h3>
-<table class="table">
-    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Is done</th>
-    </tr>
+<h2>
+    All
+    <small>(@NumberOfIncompletedTodos todo not completed)</small>
+</h2>
 
-    @foreach (var todo in Todos)
-	{
-		 <tr>
-             <td>@todo.Id</td>
-             <td>@todo.Title</td>
-             <td>@todo.Description</td>
-             <td>
-                 <input type="checkbox" @bind="todo.IsDone" /> @*Have to implement update in db after checkbox change*@
-             </td>
-         </tr>
-	}
-</table>
+@foreach (var todoList in ListOfTodos)
+{ 
+    <h3>@todoList.Title
+        <small>(@todoList.Todos.Count(t => !t.IsDone) not completed)</small>
+    </h3>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Is done</th>
+        </tr>
+
+        @foreach (var todo in todoList.Todos)
+        {
+            <tr>
+                <td>@todo.Id</td>
+                <td>@todo.Title</td>
+                <td>@todo.Description</td>
+                <td>
+                    <input type="checkbox" @bind="todo.IsDone" /> @*Have to implement update in db after checkbox change*@
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+
 
