@@ -40,6 +40,7 @@ namespace TodoList.Server
                options.UseSqlServer(Configuration.GetConnectionString("TodoListConnection")));
 
             services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped<IDbRepository, DbRepository>();
 
             services.AddAutoMapper(typeof(Startup));
 
