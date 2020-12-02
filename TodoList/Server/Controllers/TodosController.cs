@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,12 +20,14 @@ namespace TodoList.Server.Controllers
         private readonly ITodosRepository _todoRepository;
         private readonly IDbRepository _dbRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<TodosController> _logger;
 
-        public TodosController(ITodosRepository todoRepository, IDbRepository dbRepository, IMapper mapper)
+        public TodosController(ITodosRepository todoRepository, IDbRepository dbRepository, IMapper mapper, ILogger<TodosController> logger)
         {
             _todoRepository = todoRepository;
             _dbRepository = dbRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -65,7 +68,6 @@ namespace TodoList.Server.Controllers
                 {
                     return NotFound();
                 }
-
                 var todos = await _todoRepository.GetTodosAsync(listOfTodosId);
                 if (todos != null)
                 {

@@ -8,10 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 using System;
 using System.Linq;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
+using Serilog;
 
 namespace TodoList.Server
 {
@@ -102,6 +104,8 @@ namespace TodoList.Server
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
+
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 

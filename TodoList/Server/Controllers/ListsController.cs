@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,15 @@ namespace TodoList.Server.Controllers
         private readonly ITodoListsRepository _todoListsRepository;
         private readonly IDbRepository _dbRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<ListsController> _logger;
 
-        public ListsController(ITodoListsRepository todoListsRepository, IDbRepository dbRepository, IMapper mapper)
+
+        public ListsController(ITodoListsRepository todoListsRepository, IDbRepository dbRepository, IMapper mapper, ILogger<ListsController> logger)
         {
             _todoListsRepository = todoListsRepository;
             _dbRepository = dbRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
