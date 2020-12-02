@@ -1,10 +1,16 @@
 ﻿@page "/all"
 @inherits AllTodoBase
 
-<h2>
-    All
-    <small>(@NumberOfIncompletedTodos todo not completed)</small>
-</h2>
+@if (!@ListOfTodos.Any())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h2>
+        All
+        <small>(@NumberOfIncompletedTodos todo not completed)</small>
+    </h2>
 
 @foreach (var todoList in ListOfTodos)
 { 
@@ -31,6 +37,9 @@
             </tr>
         }
     </table>
+}
+
+
 }
 
 
