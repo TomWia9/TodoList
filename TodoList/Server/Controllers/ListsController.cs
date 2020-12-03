@@ -31,7 +31,7 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ListOfTodosDTO>> NewListOfTodos(ListOfTodosForCreationDTO listOfTodos)
+        public async Task<ActionResult<ListOfTodosDto>> NewListOfTodos(ListOfTodosForCreationDto listOfTodos)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace TodoList.Server.Controllers
 
                 if(await _dbRepository.SaveChangesAsync())
                 {
-                    return CreatedAtAction(nameof(GetTodoList), new { listOfTodosId = newListOfTodos.Id }, _mapper.Map<ListOfTodosDTO>(newListOfTodos));
+                    return CreatedAtAction(nameof(GetTodoList), new { listOfTodosId = newListOfTodos.Id }, _mapper.Map<ListOfTodosDto>(newListOfTodos));
                 }
             }
             catch (Exception)
@@ -52,14 +52,14 @@ namespace TodoList.Server.Controllers
         }
         
         [HttpGet("{listOfTodosId}")]
-        public async Task<ActionResult<ListOfTodosDTO>> GetTodoList(int listOfTodosId)
+        public async Task<ActionResult<ListOfTodosDto>> GetTodoList(int listOfTodosId)
         {
             try
             {
                 var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
                 if (todoList != null)
                 {
-                    return Ok(_mapper.Map<ListOfTodosDTO>(todoList));
+                    return Ok(_mapper.Map<ListOfTodosDto>(todoList));
                 }
             }
             catch (Exception)
@@ -71,14 +71,14 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListOfTodosDTO>>> GetTodoLists()
+        public async Task<ActionResult<IEnumerable<ListOfTodosDto>>> GetTodoLists()
         {
             try
             {
                 var todoLists = await _todoListsRepository.GetTodoListsAsync();
                 if (todoLists != null)
                 {
-                    return Ok(_mapper.Map<IEnumerable<ListOfTodosDTO>>(todoLists));
+                    return Ok(_mapper.Map<IEnumerable<ListOfTodosDto>>(todoLists));
                 }
             }
             catch (Exception)
@@ -90,7 +90,7 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPut("{listOfTodosId}")]
-        public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDTO listofTodos)
+        public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listofTodos)
         {
             try
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TodoList.Shared.Dto
 {
-    public class ListOfTodosForUpdateDTO : ListOfTodosForManipulationDTO
+    public class ListOfTodosForUpdateDto : ListOfTodosForManipulationDto
     {
     }
 }

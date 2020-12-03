@@ -11,9 +11,13 @@ using Newtonsoft.Json.Serialization;
 using Serilog;
 using System;
 using System.Linq;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
 using Serilog;
+using TodoList.Server.Filters;
 
 namespace TodoList.Server
 {
@@ -37,6 +41,22 @@ namespace TodoList.Server
                         new CamelCasePropertyNamesContractResolver();
                  });
             services.AddRazorPages();
+            services.AddMvc(options =>
+            {
+                options.ReturnHttpNotAcceptable = true;
+
+                options.Filters.Add(new ValidationFilter());
+                options.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                options.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+
+                options.OutputFormatters.Add(new Microsoft.AspNetCore.Mvc.Formatters.XmlSerializerOutputFormatter());
+            }).AddFluentValidation(options =>
+            {
+                options.RegisterValidatorsFromAssemblyContaining<Startup>();
+                options.ValidatorOptions.LanguageManager.Enabled = false;
+            });
 
             services.AddDbContext<TodoContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TodoListConnection")));

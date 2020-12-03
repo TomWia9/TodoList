@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TodoList.Shared.Dto
 {
-    public class ListOfTodosDTO
+    public class ListOfTodosDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public IEnumerable<TodoDTO> Todos { get; set; }
+        public IEnumerable<TodoDto> Todos { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace TodoList.Server.Data.EntityConfiguration
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(l => l.Title)
-                .IsRequired()
+                //.IsRequired() this rule is set in model as data annotation
                 .HasMaxLength(100);
         }
     }

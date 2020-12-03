@@ -31,7 +31,7 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoDTO>> NewTodo(int listOfTodosId, TodoForCreationDTO todo)
+        public async Task<ActionResult<TodoDto>> NewTodo(int listOfTodosId, TodoForCreationDto todo)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace TodoList.Server.Controllers
 
                 if (await _dbRepository.SaveChangesAsync())
                 {
-                    return CreatedAtAction(nameof(GetTodoOfList), new { listOfTodosId = listOfTodosId, todoId = newTodo.Id }, _mapper.Map<TodoDTO>(newTodo));
+                    return CreatedAtAction(nameof(GetTodoOfList), new { listOfTodosId = listOfTodosId, todoId = newTodo.Id }, _mapper.Map<TodoDto>(newTodo));
                 }
             }
 
@@ -71,7 +71,7 @@ namespace TodoList.Server.Controllers
                 var todos = await _todoRepository.GetTodosAsync(listOfTodosId);
                 if (todos != null)
                 {
-                    return Ok(_mapper.Map<IEnumerable<TodoDTO>>(todos));
+                    return Ok(_mapper.Map<IEnumerable<TodoDto>>(todos));
                 }
             }
             catch (Exception)
@@ -95,7 +95,7 @@ namespace TodoList.Server.Controllers
                 var todo = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
                 if (todo != null)
                 {
-                    return Ok(_mapper.Map<TodoDTO>(todo));
+                    return Ok(_mapper.Map<TodoDto>(todo));
                 }
             }
             catch (Exception)
@@ -107,7 +107,7 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPut("{todoId}")]
-        public async Task<IActionResult> UpdateTodo(int listOfTodosId, int todoId, TodoForUpdateDTO todo)
+        public async Task<IActionResult> UpdateTodo(int listOfTodosId, int todoId, TodoForUpdateDto todo)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPatch("{todoId}")]
-        public async Task<IActionResult> PartiallyUpdateTodo(int listOfTodosId, int todoId, JsonPatchDocument<TodoForUpdateDTO> patchDocument)
+        public async Task<IActionResult> PartiallyUpdateTodo(int listOfTodosId, int todoId, JsonPatchDocument<TodoForUpdateDto> patchDocument)
         {
             try
             {
@@ -158,7 +158,7 @@ namespace TodoList.Server.Controllers
                     return NotFound();
                 }
 
-                var todoToPatch = _mapper.Map<TodoForUpdateDTO>(todoFromRepo);
+                var todoToPatch = _mapper.Map<TodoForUpdateDto>(todoFromRepo);
                 patchDocument.ApplyTo(todoToPatch, ModelState);
                 _mapper.Map(todoToPatch, todoFromRepo);
                 _todoRepository.UpdateTodo(todoFromRepo);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TodoList.Shared.Dto
 {
-    public class TodoDTO
+    public class TodoDto
     {
         public int Id { get; set; }
         public string Title { get; set; }

@@ -12,10 +12,10 @@ namespace TodoList.Server.Data.Profiles
     {
         public TodoProfile()
         {
-            CreateMap<Todo, TodoDTO>();
-            CreateMap<TodoForCreationDTO, Todo>();
-            CreateMap<TodoForUpdateDTO, Todo>();
-            CreateMap<Todo, TodoForUpdateDTO>();
+            CreateMap<Todo, TodoDto>();
+            CreateMap<TodoForCreationDto, Todo>();
+            CreateMap<TodoForUpdateDto, Todo>();
+            CreateMap<Todo, TodoForUpdateDto>();
         }
     }
 }

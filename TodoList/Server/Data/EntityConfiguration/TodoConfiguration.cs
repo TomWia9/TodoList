@@ -15,12 +15,11 @@ namespace TodoList.Server.Data.EntityConfiguration
             builder.HasKey(t => t.Id);
 
             builder.Property(t => t.Title)
-                .IsRequired()
+                //.IsRequired() this rule is set in model as data annotation
                 .HasMaxLength(100);
 
             builder.Property(t => t.Description)
-               .IsRequired()
-               .HasMaxLength(500);
+                .HasMaxLength(500);
 
             builder.Property(t => t.IsDone)
                 .IsRequired();
