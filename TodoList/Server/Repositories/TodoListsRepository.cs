@@ -21,6 +21,11 @@ namespace TodoList.Server.Repositories
             return await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
         }
 
+        public async Task<bool> ListOfTodosExists(string title)
+        {
+            return await _context.ListsOfTodos.AnyAsync(t => t.Title == title);
+        }
+
         public async Task<IEnumerable<ListOfTodos>> GetTodoListsAsync()
         {
             return await _context.ListsOfTodos.Include(l => l.Todos).ToListAsync();

@@ -35,6 +35,11 @@ namespace TodoList.Server.Controllers
         {
             try
             {
+                if (await _todoListsRepository.ListOfTodosExists(listOfTodos.Title))
+                {
+                    return Conflict();
+                }
+
                 var newListOfTodos = _mapper.Map<ListOfTodos>(listOfTodos);
                 _dbRepository.Add(newListOfTodos);
 
@@ -90,10 +95,15 @@ namespace TodoList.Server.Controllers
         }
 
         [HttpPut("{listOfTodosId}")]
-        public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listofTodos)
+        public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listOfTodos)
         {
             try
             {
+                if (await _todoListsRepository.ListOfTodosExists(listOfTodos.Title))
+                {
+                    return Conflict();
+                }
+
                 var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
 
                 if (listOfTodosFromRepo == null)
@@ -101,7 +111,7 @@ namespace TodoList.Server.Controllers
                     return NotFound();
                 }
 
-                _mapper.Map(listofTodos, listOfTodosFromRepo);
+                _mapper.Map(listOfTodos, listOfTodosFromRepo);
                 _todoListsRepository.UpdateTodoList(listOfTodosFromRepo);
 
                 if (await _dbRepository.SaveChangesAsync())

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
+using TodoList.Server.Validators;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Server.Controllers
@@ -40,13 +41,19 @@ namespace TodoList.Server.Controllers
                     return NotFound();
                 }
 
+                if (await _todoRepository.TodoExists(listOfTodosId, todo.Title))
+                {
+                    return Conflict();
+                }
+
                 var newTodo = _mapper.Map<Todo>(todo);
                 newTodo.ListOfTodosId = listOfTodosId;
                 _dbRepository.Add(newTodo);
 
                 if (await _dbRepository.SaveChangesAsync())
                 {
-                    return CreatedAtAction(nameof(GetTodoOfList), new { listOfTodosId = listOfTodosId, todoId = newTodo.Id }, _mapper.Map<TodoDto>(newTodo));
+                    return CreatedAtAction(nameof(GetTodoOfList),
+                        new {listOfTodosId = listOfTodosId, todoId = newTodo.Id}, _mapper.Map<TodoDto>(newTodo));
                 }
             }
 
@@ -116,6 +123,11 @@ namespace TodoList.Server.Controllers
                     return NotFound();
                 }
 
+                if (await _todoRepository.TodoExists(listOfTodosId, todo.Title))
+                {
+                    return Conflict();
+                }
+
                 var todoFromRepo = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
 
                 if (todoFromRepo == null)
@@ -160,6 +172,26 @@ namespace TodoList.Server.Controllers
 
                 var todoToPatch = _mapper.Map<TodoForUpdateDto>(todoFromRepo);
                 patchDocument.ApplyTo(todoToPatch, ModelState);
+
+                // Trigger validation manually
+                var validationResult = await new TodoForUpdateValidator().ValidateAsync(todoToPatch);
+                if (!validationResult.IsValid)
+                {
+                    // Add validation errors to ModelState
+                    foreach (var error in validationResult.Errors)
+                    {
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    }
+
+                    // Patch failed, return 400 result
+                    return BadRequest(ModelState);
+                }
+
+                if (await _todoRepository.TodoExists(listOfTodosId, todoToPatch.Title))
+                {
+                    return Conflict();
+                }
+
                 _mapper.Map(todoToPatch, todoFromRepo);
                 _todoRepository.UpdateTodo(todoFromRepo);
 

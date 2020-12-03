@@ -10,6 +10,7 @@ namespace TodoList.Server.Repositories
     {
         Task<IEnumerable<ListOfTodos>> GetTodoListsAsync();
         Task<ListOfTodos> GetTodoListAsync(int todoListId);
+        Task<bool> ListOfTodosExists(string title);
         void UpdateTodoList(ListOfTodos listOfTodos);
     }
 }

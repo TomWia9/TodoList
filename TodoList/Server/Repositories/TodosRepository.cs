@@ -31,6 +31,11 @@ namespace TodoList.Server.Repositories
             return await _context.ListsOfTodos.AnyAsync(l => l.Id == listOfTodosId);
         }
 
+        public async Task<bool> TodoExists(int listOfTodosId, string title)
+        {
+            return await _context.Todos.AnyAsync(l => l.ListOfTodosId == listOfTodosId && l.Title == title);
+        }
+
         public void UpdateTodo(Todo todo)
         {
             //no code in this implementation
