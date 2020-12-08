@@ -11,7 +11,6 @@ using Newtonsoft.Json.Serialization;
 using Serilog;
 using System;
 using System.Linq;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Server.Models;
@@ -52,10 +51,6 @@ namespace TodoList.Server
                     new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
 
                 options.OutputFormatters.Add(new Microsoft.AspNetCore.Mvc.Formatters.XmlSerializerOutputFormatter());
-            }).AddFluentValidation(options =>
-            {
-                options.RegisterValidatorsFromAssemblyContaining<Startup>();
-                options.ValidatorOptions.LanguageManager.Enabled = false;
             });
 
             services.AddDbContext<TodoContext>(options =>

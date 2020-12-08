@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
-using TodoList.Server.Validators;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Server.Controllers
@@ -173,19 +172,19 @@ namespace TodoList.Server.Controllers
                 var todoToPatch = _mapper.Map<TodoForUpdateDto>(todoFromRepo);
                 patchDocument.ApplyTo(todoToPatch, ModelState);
 
-                // Trigger validation manually
-                var validationResult = await new TodoForUpdateValidator().ValidateAsync(todoToPatch);
-                if (!validationResult.IsValid)
-                {
-                    // Add validation errors to ModelState
-                    foreach (var error in validationResult.Errors)
-                    {
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                    }
+                //// Trigger validation manually
+                //var validationResult = await new TodoForUpdateValidator().ValidateAsync(todoToPatch);
+                //if (!validationResult.IsValid)
+                //{
+                //    // Add validation errors to ModelState
+                //    foreach (var error in validationResult.Errors)
+                //    {
+                //        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                //    }
 
-                    // Patch failed, return 400 result
-                    return BadRequest(ModelState);
-                }
+                //    // Patch failed, return 400 result
+                //    return BadRequest(ModelState);
+                //}
 
                 if (await _todoRepository.TodoExists(listOfTodosId, todoToPatch.Title))
                 {
