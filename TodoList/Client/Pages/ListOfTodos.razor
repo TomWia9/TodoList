@@ -1,11 +1,7 @@
 ﻿@page "/list/{Id:int}"
 @inherits ListOfTodosBase
 
-@if (@ListOfTodos == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
+@if (ListOfTodos != null)
 {
     <h2>
         @ListOfTodos.Title
@@ -32,4 +28,15 @@ else
             </tr>
         }
     </table>
+}
+
+else if (LoadFailed)
+{
+
+    <h1>Sorry, we could not load this list due to an error.</h1>
+}
+
+else
+{
+    <p><em>Loading...</em></p>
 }

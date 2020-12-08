@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.Extensions.Logging;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Pages
@@ -19,8 +20,9 @@ namespace TodoList.Client.Pages
 
         [Parameter]
         public int Id { get; set; }
-        public ListOfTodosDto ListOfTodos { get; set; }
-        public int NumberOfIncompletedTodos { get; set; } = 0;
+        protected ListOfTodosDto ListOfTodos { get; set; }
+        protected int NumberOfIncompletedTodos { get; set; } = 0;
+        protected bool LoadFailed { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -34,12 +36,18 @@ namespace TodoList.Client.Pages
 
         private async Task GetListOfTodos()
         {
-            ListOfTodos = await HttpClient.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{Id}");
-
-            if (ListOfTodos != null)
+            try
             {
+                ListOfTodos = await HttpClient.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{Id}");
                 NumberOfIncompletedTodos = ListOfTodos.Todos.Count(t => !t.IsDone);
+
+                LoadFailed = false;
             }
+            catch
+            {
+                LoadFailed = true;
+            }
+
         }
     }
 }
