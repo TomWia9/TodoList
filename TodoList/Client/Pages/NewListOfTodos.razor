@@ -1,0 +1,25 @@
+﻿@page "/newList"
+@inherits NewListOfTodosBase
+
+<h2>Creating new List of todos</h2>
+
+<EditForm Model="@ListOfTodos" OnValidSubmit="@CreateList">
+    <DataAnnotationsValidator />
+
+    <div class="form-group col-5">
+        <label>Title</label>
+        <InputText @bind-Value="ListOfTodos.Title" class="form-control" />
+        <ValidationMessage For="@(() => ListOfTodos.Title)" />
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</EditForm>
+
+@if (ListAlreadyExists)
+{
+    <h2>List with this title already exists</h2>
+}
+else if (CreationFailed)
+{
+    <h2>Something went wrong, try again later</h2>
+}
