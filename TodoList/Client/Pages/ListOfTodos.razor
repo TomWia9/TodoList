@@ -1,22 +1,17 @@
-﻿@page "/all"
-@inherits AllTodoBase
+﻿@page "/list/{Id:int}"
+@inherits ListOfTodosBase
 
-@if (!@ListsOfTodos.Any())
+@if (@ListOfTodos == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
     <h2>
-        All
+        @ListOfTodos.Title
         <small>(@NumberOfIncompletedTodos todo not completed)</small>
     </h2>
 
-@foreach (var todoList in ListsOfTodos)
-{ 
-    <h3>@todoList.Title
-        <small>(@todoList.Todos.Count(t => !t.IsDone) not completed)</small>
-    </h3>
     <table class="table">
         <tr>
             <th>Id</th>
@@ -25,7 +20,7 @@ else
             <th>Is done</th>
         </tr>
 
-        @foreach (var todo in todoList.Todos)
+        @foreach (var todo in ListOfTodos.Todos)
         {
             <tr>
                 <td>@todo.Id</td>
@@ -38,9 +33,3 @@ else
         }
     </table>
 }
-
-
-}
-
-
-
