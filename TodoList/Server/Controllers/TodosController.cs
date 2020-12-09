@@ -117,12 +117,13 @@ namespace TodoList.Server.Controllers
         {
             try
             {
+
                 if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
                 {
                     return NotFound();
                 }
 
-                if (await _todoRepository.TodoExists(listOfTodosId, todo.Title))
+                if (await _todoRepository.TodoExists(listOfTodosId, todo.Title, todoId))
                 {
                     return Conflict();
                 }
