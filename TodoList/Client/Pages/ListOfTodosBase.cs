@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
@@ -23,6 +24,7 @@ namespace TodoList.Client.Pages
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
+        protected bool UpdateFailed { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,6 +39,26 @@ namespace TodoList.Client.Pages
         protected void NavigateToNewListComponent()
         {
             NavigationManager.NavigateTo("newList");
+        }
+
+        protected async Task UpdateStatus(TodoDto todo)
+        {
+            try
+            {
+                todo.IsDone = !todo.IsDone; 
+
+                var response = await HttpClient.PutAsJsonAsync(
+                    $"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}",
+                    new TodoForUpdateDto(){Title = todo.Title, Description = todo.Description, IsDone = todo.IsDone});
+
+                UpdateFailed = !response.IsSuccessStatusCode;
+
+
+            }
+            catch
+            {
+                UpdateFailed = true;
+            }
         }
 
         private async Task GetListOfTodos()

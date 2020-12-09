@@ -31,18 +31,8 @@ namespace TodoList.Server.Repositories
             return await _context.ListsOfTodos.AnyAsync(l => l.Id == listOfTodosId);
         }
 
-        public async Task<bool> TodoExists(int listOfTodosId, string title, int? todoId = null) //but title for this may be ok
+        public async Task<bool> TodoExists(int listOfTodosId, string title, int? todoId = null) 
         {
-            //if (todoId == null)
-            //{
-
-            //}
-
-            //else
-            //{
-
-            //}
-
             return await _context.Todos.AnyAsync(t => t.Id != todoId && t.ListOfTodosId == listOfTodosId && t.Title == title);
         }
 

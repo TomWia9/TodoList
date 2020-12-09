@@ -21,17 +21,23 @@
                 <td>@todo.Title</td>
                 <td>@todo.Description</td>
                 <td>
-                    <input type="checkbox" @bind="todo.IsDone" /> @*Have to implement update in db after checkbox change*@
+                    <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" /> 
                 </td>
             </tr>
         }
+
     </table>
 }
 
 else if (LoadFailed)
 {
-
     <h2>List doesn't exists. Do you want to create new list?</h2>
+}
+
+else if (UpdateFailed)
+{
+
+    <h2>Update failed, try again later</h2>
     <button class="btn btn-primary" @onclick="NavigateToNewListComponent">New list</button>
 }
 
