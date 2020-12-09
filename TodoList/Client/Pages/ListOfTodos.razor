@@ -3,30 +3,46 @@
 
 @if (ListOfTodos != null)
 {
-    <h2>
+
+    <h4>
         @ListOfTodos.Title
         <small>(@NumberOfIncompletedTodos todo not completed)</small>
-    </h2>
+    </h4>
 
-    <table class="table">
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Is done</th>
-        </tr>
+    <div class="card">
+          
+        <div class="mb-4" style="overflow-y: auto; max-height: 400px">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Is done</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var todo in ListOfTodos.Todos)
+                {
+                    <tr>
+                        <td>@todo.Title</td>
+                        <td>@todo.Description</td>
+                        <td>
+                            <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))"/>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
 
-        @foreach (var todo in ListOfTodos.Todos)
-        {
-            <tr>
-                <td>@todo.Title</td>
-                <td>@todo.Description</td>
-                <td>
-                    <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" /> 
-                </td>
-            </tr>
-        }
+        <div class="card-footer">
+            <NewTodo ListId="@ListOfTodos.Id"></NewTodo>
+        </div>
+    </div>
 
-    </table>
+
+        
+         
 }
 
 else if (LoadFailed)

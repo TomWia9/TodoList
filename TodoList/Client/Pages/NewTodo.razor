@@ -1,0 +1,13 @@
+﻿@inherits NewTodoBase
+
+<EditForm Model="@TodoForCreation" OnValidSubmit="@CreateTodo">
+    <DataAnnotationsValidator />
+    
+    <div class="d-flex form-group">
+        <InputText @bind-Value="TodoForCreation.Title" class="form-control mr-2" placeholder="Add task" />
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+    <ValidationMessage For="@(() => TodoForCreation.Title)" />
+
+
+</EditForm>
