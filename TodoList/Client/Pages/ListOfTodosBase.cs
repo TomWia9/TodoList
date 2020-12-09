@@ -34,6 +34,11 @@ namespace TodoList.Client.Pages
             await GetListOfTodos();
         }
 
+        protected void NavigateToNewListComponent()
+        {
+            NavigationManager.NavigateTo("newList");
+        }
+
         private async Task GetListOfTodos()
         {
             try
@@ -49,5 +54,7 @@ namespace TodoList.Client.Pages
             }
 
         }
+
+        
     }
 }
