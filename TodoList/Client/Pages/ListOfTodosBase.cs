@@ -76,7 +76,5 @@ namespace TodoList.Client.Pages
             }
 
         }
-
-        
     }
 }
