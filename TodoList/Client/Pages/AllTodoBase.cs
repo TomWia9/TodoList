@@ -16,9 +16,10 @@ namespace TodoList.Client.Pages
         public IEnumerable<ListOfTodosDto> ListsOfTodos { get; set; } = new List<ListOfTodosDto>();
         public int NumberOfIncompletedTodos { get; set; } = 0;
 
+        //have to change it to get just ids instead of all full lists
         protected override async Task OnInitializedAsync()
         {
-            ListsOfTodos = await HttpClient.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
+            ListsOfTodos = await HttpClient.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists"); 
 
             if (ListsOfTodos != null)
             {

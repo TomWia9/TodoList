@@ -14,30 +14,8 @@ else
 
     @foreach (var todoList in ListsOfTodos)
     { 
-        <h3>@todoList.Title
-            <small>(@todoList.Todos.Count(t => !t.IsDone) not completed)</small>
-        </h3>
-        <table class="table">
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Is done</th>
-            </tr>
-
-            @foreach (var todo in todoList.Todos)
-            {
-                <tr>
-                    <td>@todo.Title</td>
-                    <td>@todo.Description</td>
-                    <td>
-                        <input type="checkbox" @bind="todo.IsDone" /> @*Have to implement update in db after checkbox change*@
-                    </td>
-                </tr>
-            }
-        </table>
+        <TodosTable ListId="todoList.Id"></TodosTable>
     }
-
-
 }
 
 

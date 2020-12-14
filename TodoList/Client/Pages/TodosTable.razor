@@ -1,0 +1,62 @@
+﻿@inherits TodosTableBase
+
+@if (ListOfTodos != null)
+{
+
+    <h4>
+        @ListOfTodos.Title
+        <small>(@NumberOfIncompletedTodos todo not completed)</small>
+    </h4>
+
+    <div class="card mb-4">
+
+        <div class="mb-4" style="overflow-y: auto; max-height: 400px">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Is done</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var todo in ListOfTodos.Todos)
+                    {
+                        <tr>
+                            <td>@todo.Title</td>
+                            <td>@todo.Description</td>
+                            <td>
+                                <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <NewTodo ListId="@ListOfTodos.Id"></NewTodo>
+        </div>
+    </div>
+
+
+
+
+}
+
+else if (LoadFailed)
+{
+    <h2>List doesn't exists. Do you want to create new list?</h2>
+    <button class="btn btn-primary" @onclick="NavigateToNewListComponent">New list</button>
+}
+
+else if (UpdateFailed)
+{
+
+    <h2>Update failed, try again later</h2>
+}
+
+else
+{
+    <p><em>Loading...</em></p>
+}
