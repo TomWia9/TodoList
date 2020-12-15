@@ -8,12 +8,18 @@ namespace TodoList.Server.Models
 {
     public class Todo
     {
+        public Todo()
+        {
+            DateAdded = DateTime.Now;
+        }
+
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false)] //this can't be done in fluent api
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsDone { get; set; }
+        public DateTime DateAdded { get; set; }
         public int ListOfTodosId { get; set; }
         public ListOfTodos ListOfTodos { get; set; }
     }
