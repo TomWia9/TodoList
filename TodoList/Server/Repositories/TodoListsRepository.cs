@@ -18,7 +18,9 @@ namespace TodoList.Server.Repositories
 
         public async Task<ListOfTodos> GetTodoListAsync(int todoListId)
         {
-            return await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
+            var todoList = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
+            todoList.Todos = todoList.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);
+            return todoList;
         }
 
         public async Task<bool> ListOfTodosExists(string title)
@@ -28,7 +30,14 @@ namespace TodoList.Server.Repositories
 
         public async Task<IEnumerable<ListOfTodos>> GetTodoListsAsync()
         {
-            return await _context.ListsOfTodos.Include(l => l.Todos).ToListAsync();
+            IEnumerable<ListOfTodos> todoLists = await _context.ListsOfTodos.Include(l => l.Todos).ToListAsync();
+
+            foreach (var todoList in todoLists)
+            {
+                todoList.Todos = todoList.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);
+            }
+
+            return todoLists;
         }
 
         public void UpdateTodoList(ListOfTodos listOfTodos)
