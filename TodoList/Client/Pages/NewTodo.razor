@@ -1,6 +1,6 @@
 ﻿@inherits NewTodoBase
 
-<EditForm Model="@TodoForCreation" OnValidSubmit="@CreateTodo">
+<EditForm Model="@TodoForCreation" OnValidSubmit="@(async () => await CreateTodo())">
     <DataAnnotationsValidator />
 
     <div class="d-flex form-group">

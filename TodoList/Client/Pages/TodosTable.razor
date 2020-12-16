@@ -35,12 +35,9 @@
         </div>
 
         <div class="card-footer">
-            <NewTodo ListId="@ListOfTodos.Id"></NewTodo>
+            <NewTodo ListId="@ListOfTodos.Id" OnCreated="@(async () => await GetListOfTodos())"></NewTodo>
         </div>
     </div>
-
-
-
 
 }
 

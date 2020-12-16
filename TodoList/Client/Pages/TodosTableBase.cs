@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -50,6 +51,8 @@ namespace TodoList.Client.Pages
 
                 UpdateFailed = !response.IsSuccessStatusCode;
 
+                await GetListOfTodos();
+
             }
             catch
             {
@@ -57,7 +60,7 @@ namespace TodoList.Client.Pages
             }
         }
 
-        private async Task GetListOfTodos()
+        protected async Task GetListOfTodos()
         {
             try
             {
@@ -72,7 +75,5 @@ namespace TodoList.Client.Pages
             }
 
         }
-
-
     }
 }

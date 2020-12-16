@@ -16,11 +16,12 @@ namespace TodoList.Client.Pages
         [Inject]
         protected HttpClient HttpClient { get; set; }
 
-        [Inject]
-        protected NavigationManager NavigationManager { get; set; }
-
         [Parameter]
         public int ListId { get; set; }
+
+        [Parameter] 
+        public EventCallback OnCreated { get; set; }
+
 
         protected TodoForCreationDto TodoForCreation { get; set; } = new TodoForCreationDto();
         protected  bool TodoAlreadyExists { get; set; }
@@ -45,16 +46,10 @@ namespace TodoList.Client.Pages
             }
             else
             {
-                //reload page to display new todo
-                //maybe form reset or something
                 CreationFailed = false;
-                RefreshPage();
-            }
-        }
+               await OnCreated.InvokeAsync();
 
-        protected void RefreshPage()
-        {
-            NavigationManager.NavigateTo($"refreshList/{ListId}");
+            }
         }
     }
 }
