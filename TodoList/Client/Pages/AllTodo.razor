@@ -14,7 +14,7 @@ else
 
     @foreach (var todoList in ListsOfTodos)
     { 
-        <TodosTable ListId="todoList.Id"></TodosTable>
+        <TodosTable ListId="todoList.Id" OnUpdated="GetNumberOfIncompetedTodos"></TodosTable>
     }
 }
 

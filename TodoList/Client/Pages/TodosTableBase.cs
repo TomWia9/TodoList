@@ -19,6 +19,9 @@ namespace TodoList.Client.Pages
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
+        [Parameter]
+        public EventCallback OnUpdated { get; set; }
+
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
@@ -52,6 +55,8 @@ namespace TodoList.Client.Pages
                 UpdateFailed = !response.IsSuccessStatusCode;
 
                 await GetListOfTodos();
+
+                await OnUpdated.InvokeAsync();
 
             }
             catch
