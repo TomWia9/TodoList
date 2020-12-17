@@ -23,7 +23,7 @@
                     @foreach (var todo in ListOfTodos.Todos)
                     {
                         <tr>
-                            <td>@todo.Title</td>
+                            <td class="d-flex flex-column">@todo.Title @if((DateTime.Now - todo.DateAdded).TotalMinutes <= 30 && !todo.IsDone){<small class="text-success"> (New)</small>}</td>
                             <td>@todo.Description</td>
                             <td>
                                 <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" />
