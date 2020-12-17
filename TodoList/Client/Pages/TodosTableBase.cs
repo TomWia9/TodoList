@@ -19,22 +19,15 @@ namespace TodoList.Client.Pages
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
-        [Parameter]
-        public EventCallback OnUpdated { get; set; }
-
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            await GetListOfTodos();
-        }
-
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();
+            await GetNumberOfIncompletedTodos();
         }
 
         protected void NavigateToNewListComponent()
@@ -54,9 +47,7 @@ namespace TodoList.Client.Pages
 
                 UpdateFailed = !response.IsSuccessStatusCode;
 
-                await GetListOfTodos();
-
-                await OnUpdated.InvokeAsync();
+                await GetNumberOfIncompletedTodos();
 
             }
             catch
@@ -70,7 +61,6 @@ namespace TodoList.Client.Pages
             try
             {
                 ListOfTodos = await HttpClient.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{ListId}");
-                NumberOfIncompletedTodos = ListOfTodos.Todos.Count(t => !t.IsDone);
 
                 LoadFailed = false;
             }
@@ -79,6 +69,11 @@ namespace TodoList.Client.Pages
                 LoadFailed = true;
             }
 
+        }
+
+        private async Task GetNumberOfIncompletedTodos()
+        {
+            NumberOfIncompletedTodos = await HttpClient.GetFromJsonAsync<int>($"api/lists/{ListId}/NumberOfIncompletedTodos");
         }
     }
 }

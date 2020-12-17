@@ -23,9 +23,19 @@ namespace TodoList.Server.Repositories
             return todoList;
         }
 
+        public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
+        {
+            return await _context.ListsOfTodos.Select(l => l.Id).ToListAsync();
+        }
+
         public async Task<bool> ListOfTodosExists(string title)
         {
             return await _context.ListsOfTodos.AnyAsync(t => t.Title == title);
+        }
+
+        public async Task<bool> ListOfTodosExists(int id)
+        {
+            return await _context.ListsOfTodos.AnyAsync(t => t.Id == id);
         }
 
         public async Task<IEnumerable<ListOfTodos>> GetTodoListsAsync()
@@ -43,6 +53,12 @@ namespace TodoList.Server.Repositories
         public void UpdateTodoList(ListOfTodos listOfTodos)
         {
             //no code in this implementation
+        }
+
+        public async Task<int> GetNumberOfIncompletedTodos(int listOfTodosId)
+        {
+            var listOfTodos = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == listOfTodosId);
+            return listOfTodos.Todos.Count(x => !x.IsDone);
         }
     }
 }

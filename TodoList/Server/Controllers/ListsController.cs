@@ -94,6 +94,46 @@ namespace TodoList.Server.Controllers
             return NotFound();
         }
 
+        [HttpGet("ids")]
+        public async Task<ActionResult<IEnumerable<ListOfTodosDto>>> GetTodoListsIds()
+        {
+            try
+            {
+                var todoListsIds = await _todoListsRepository.GetTodoListsIdsAsync();
+                if (todoListsIds != null)
+                {
+                    return Ok(todoListsIds);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+            return NotFound();
+        }
+
+
+        [HttpGet("{listOfTodosId}/NumberOfIncompletedTodos")]
+        public async Task<ActionResult<int>> GetNumberOfIncompletedTodos(int listOfTodosId)
+        {
+            try
+            {
+                if (!await _todoListsRepository.ListOfTodosExists(listOfTodosId))
+                {
+                    return NotFound();
+                }
+
+                var numberOfIncompletedTodos = await _todoListsRepository.GetNumberOfIncompletedTodos(listOfTodosId);
+                return Ok(numberOfIncompletedTodos);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+        }
+
         [HttpPut("{listOfTodosId}")]
         public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listOfTodos)
         {

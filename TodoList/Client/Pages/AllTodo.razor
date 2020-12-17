@@ -1,20 +1,19 @@
 ﻿@page "/all"
 @inherits AllTodoBase
 
-@if (!ListsOfTodos.Any())
+@if (!TodoListsIds.Any())
 {
     <p><em>Loading...</em></p>
 }
 else
 {
     <h2>
-        All
-        <small>(@NumberOfIncompletedTodos todo not completed)</small>
+        All lists of todos
     </h2>
 
-    @foreach (var todoList in ListsOfTodos)
+    @foreach (var todoListId in TodoListsIds)
     { 
-        <TodosTable ListId="todoList.Id" OnUpdated="GetNumberOfIncompetedTodos"></TodosTable>
+        <TodosTable ListId="todoListId"></TodosTable>
     }
 }
 
