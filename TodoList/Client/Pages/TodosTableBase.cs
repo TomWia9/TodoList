@@ -47,6 +47,7 @@ namespace TodoList.Client.Pages
 
                 UpdateFailed = !response.IsSuccessStatusCode;
 
+                await GetListOfTodos();
                 await GetNumberOfIncompletedTodos();
 
             }
