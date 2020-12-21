@@ -14,6 +14,7 @@ namespace TodoList.Client.Pages
         [Inject]
         protected HttpClient HttpClient { get; set; }
         public IEnumerable<int> TodoListsIds { get; set; } = new List<int>();
+        protected int NumberOfAllIncompletedTodos { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -23,6 +24,13 @@ namespace TodoList.Client.Pages
         private async Task GetTodoListsIdsAsync()
         {
             TodoListsIds = await HttpClient.GetFromJsonAsync<IEnumerable<int>>("api/lists/ids");
+            await LoadNumberOfAllIncompletedTodos();
+        }
+
+        protected async Task LoadNumberOfAllIncompletedTodos()
+        {
+            NumberOfAllIncompletedTodos = await HttpClient.GetFromJsonAsync<int>("api/lists/numberOfAllIncompletedTodos");
+
         }
     }
 }

@@ -134,6 +134,21 @@ namespace TodoList.Server.Controllers
 
         }
 
+        [HttpGet("NumberOfAllIncompletedTodos")]
+        public async Task<ActionResult<int>> GetNumberOfAllIncompletedTodos()
+        {
+            try
+            {
+                var numberOfAllIncompletedTodos = await _todoListsRepository.GetNumberOfAllIncompletedTodos();
+                return Ok(numberOfAllIncompletedTodos);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            }
+
+        }
+
         [HttpPut("{listOfTodosId}")]
         public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listOfTodos)
         {

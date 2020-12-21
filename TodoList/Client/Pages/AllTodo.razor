@@ -9,11 +9,12 @@ else
 {
     <h2>
         All lists of todos
+        <small>(All incompleted todos: @NumberOfAllIncompletedTodos)</small>
     </h2>
 
     @foreach (var todoListId in TodoListsIds)
     { 
-        <TodosTable ListId="todoListId"></TodosTable>
+        <TodosTable ListId="todoListId" OnUpdated="async () => await LoadNumberOfAllIncompletedTodos()"></TodosTable>
     }
 }
 

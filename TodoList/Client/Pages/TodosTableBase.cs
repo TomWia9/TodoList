@@ -13,6 +13,9 @@ namespace TodoList.Client.Pages
         [Parameter]
         public int ListId { get; set; }
 
+        [Parameter]
+        public EventCallback OnUpdated { get; set; }
+
         [Inject]
         protected HttpClient HttpClient { get; set; }
 
@@ -49,6 +52,7 @@ namespace TodoList.Client.Pages
 
                 await GetListOfTodos();
                 await GetNumberOfIncompletedTodos();
+                await OnUpdated.InvokeAsync();
 
             }
             catch

@@ -16,5 +16,6 @@ namespace TodoList.Server.Repositories
 
         void UpdateTodoList(ListOfTodos listOfTodos);
         Task<int> GetNumberOfIncompletedTodos(int listOfTodosId);
+        Task<int> GetNumberOfAllIncompletedTodos();
     }
 }

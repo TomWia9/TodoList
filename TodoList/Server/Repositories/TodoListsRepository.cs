@@ -60,5 +60,19 @@ namespace TodoList.Server.Repositories
             var listOfTodos = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == listOfTodosId);
             return listOfTodos.Todos.Count(x => !x.IsDone);
         }
+
+        public async Task<int> GetNumberOfAllIncompletedTodos()
+        {
+            var listsOfTodos = await _context.ListsOfTodos.Include(l => l.Todos).ToListAsync();
+
+            var numberOfAllIncompletedTodos = 0;
+
+            foreach (var listOfTodo in listsOfTodos)
+            {
+                numberOfAllIncompletedTodos += listOfTodo.Todos.Count(t => !t.IsDone);
+            }
+
+            return numberOfAllIncompletedTodos;
+        }
     }
 }
