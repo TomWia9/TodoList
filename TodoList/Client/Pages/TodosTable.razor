@@ -13,29 +13,34 @@
         <div class="mb-4" style="overflow-y: auto; max-height: 400px">
             <table class="table table-striped">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Is done</th>
-                    </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Is done</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var todo in ListOfTodos.Todos)
-                    {
-                        <tr>
-                            <td class="d-flex flex-column">@todo.Title @if((DateTime.Now - todo.DateAdded).TotalMinutes <= 30 && !todo.IsDone){<small class="text-success"> (New)</small>}</td>
-                            <td>@todo.Description</td>
-                            <td>
-                                <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" />
-                            </td>
-                        </tr>
-                    }
+                @foreach (var todo in ListOfTodos.Todos)
+                {
+                    <tr>
+                        <td class="d-flex flex-column">@todo.Title
+                            @if ((DateTime.Now - todo.DateAdded).TotalMinutes <= 30 && !todo.IsDone)
+                            {
+                                <small class="text-success"> (New)</small>
+                            }
+                        </td>
+                        <td>@todo.Description</td>
+                        <td>
+                            <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))"/>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
 
         <div class="card-footer">
-            <NewTodo ListId="@ListOfTodos.Id" OnCreated="@(async () => await GetListOfTodos())"></NewTodo>
+            <NewTodo ListId="@ListOfTodos.Id" OnCreated="@(async () => await ReloadListOfTodos())"></NewTodo>
         </div>
     </div>
 

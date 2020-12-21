@@ -50,9 +50,7 @@ namespace TodoList.Client.Pages
 
                 UpdateFailed = !response.IsSuccessStatusCode;
 
-                await GetListOfTodos();
-                await GetNumberOfIncompletedTodos();
-                await OnUpdated.InvokeAsync();
+                await ReloadListOfTodos();
 
             }
             catch
@@ -61,7 +59,7 @@ namespace TodoList.Client.Pages
             }
         }
 
-        protected async Task GetListOfTodos()
+        private async Task GetListOfTodos()
         {
             try
             {
@@ -79,6 +77,13 @@ namespace TodoList.Client.Pages
         private async Task GetNumberOfIncompletedTodos()
         {
             NumberOfIncompletedTodos = await HttpClient.GetFromJsonAsync<int>($"api/lists/{ListId}/NumberOfIncompletedTodos");
+        }
+
+        protected async Task ReloadListOfTodos()
+        {
+            await GetListOfTodos();
+            await GetNumberOfIncompletedTodos();
+            await OnUpdated.InvokeAsync();
         }
     }
 }
