@@ -1,47 +1,61 @@
 ﻿@using System.Net.Http
 @using TodoList.Shared.Dto
 @inject HttpClient Http
+@inject AppState AppState
+@implements IDisposable
 
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">TodoList</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+    <div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">TodoList</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="swagger">
-                <span class="oi oi-arrow-thick-right" aria-hidden="true"></span> Swagger
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="newList">
-                <span class="oi oi-plus" aria-hidden="true"></span> New list
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="all">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> All
-            </NavLink>
-        </li>
-        @foreach (var list in _listsOfTodos)
-        {
-            var href = "list/" + list.Id;
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href=@href>
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> @list.Title
+                <NavLink class="nav-link" href="swagger">
+                    <span class="oi oi-arrow-thick-right" aria-hidden="true"></span> Swagger
                 </NavLink>
             </li>
-        }
-    </ul>
-</div>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="newList">
+                    <span class="oi oi-plus" aria-hidden="true"></span> New list
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="all">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> All
+                </NavLink>
+            </li>
+            @if (AppState.ListsOfTodos.Any())
+            {
+                @foreach (var list in AppState.ListsOfTodos)
+                {
+                    var href = "list/" + list.Id;
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href=@href>
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> @list.Title
+                        </NavLink>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="nav-item px-3">
+                    <p class="text-white">Loading...</p>
+                </li>
+            }
+
+        </ul>
+    </div>
+
+
 
 @code {
     private bool collapseNavMenu = true;
@@ -53,8 +67,14 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    private IEnumerable<ListOfTodosDto> _listsOfTodos = new List<ListOfTodosDto>();
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.ReloadLists(await Http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists"));
+        AppState.OnNewListCreated += StateHasChanged;
+    }
 
-    protected override async Task OnInitializedAsync() =>
-        _listsOfTodos = await Http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
+    public void Dispose()
+    {
+        AppState.OnNewListCreated -= StateHasChanged;
+    }
 }
