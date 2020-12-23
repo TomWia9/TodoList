@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
 
@@ -24,7 +25,7 @@ namespace TodoList.Client.Pages
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        protected AppState AppState { get; set; }
+        protected TodoListsService TodoListsService { get; set; }
 
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;

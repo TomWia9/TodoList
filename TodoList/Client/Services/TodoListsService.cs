@@ -6,9 +6,9 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using TodoList.Shared.Dto;
 
-namespace TodoList.Client.Shared
+namespace TodoList.Client.Services
 {
-    public class AppState
+    public class TodoListsService
     {
         public IEnumerable<ListOfTodosDto> ListsOfTodos = new List<ListOfTodosDto>();
 
@@ -16,22 +16,24 @@ namespace TodoList.Client.Shared
 
         private readonly HttpClient _http;
 
-        public AppState(HttpClient http)
+        public TodoListsService(HttpClient http)
         {
             _http = http;
         }
 
-        public async Task ReloadLists()
+        public async Task GetAllListsOfTodos()
         {
             ListsOfTodos = await _http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
             NotifyStateChanged();
         }
 
+        public ListOfTodosDto GetListOfTodos(int listId)
+        {
+            return ListsOfTodos.FirstOrDefault(l => l.Id == listId);
+        }
+
         private void NotifyStateChanged() => OnNewListCreated?.Invoke();
 
-        //public async Task<ListOfTodosDto> GetListOfTodos(int listId)
-        //{
-        //    return ListsOfTodos.FirstOrDefault(l => l.Id == listId);
-        //}
+        
     }
 }

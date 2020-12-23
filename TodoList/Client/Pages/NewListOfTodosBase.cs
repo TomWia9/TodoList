@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
 
@@ -20,7 +21,7 @@ namespace TodoList.Client.Pages
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
         [Inject]
-        protected AppState AppState { get; set; }
+        protected TodoListsService TodoListsService { get; set; }
 
         protected ListOfTodosForCreationDto ListOfTodos { get; set; } = new ListOfTodosForCreationDto();
         protected bool CreationFailed { get; set; }
@@ -42,7 +43,7 @@ namespace TodoList.Client.Pages
             {
                 var data = await response.Content.ReadFromJsonAsync<JsonElement>();
                 var url = $"list/{data.GetProperty("id")}";
-                await AppState.ReloadLists();
+                await TodoListsService.GetAllListsOfTodos();
                 NavigationManager.NavigateTo(url);
             }
         }
