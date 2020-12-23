@@ -42,7 +42,7 @@ namespace TodoList.Client.Pages
             {
                 var data = await response.Content.ReadFromJsonAsync<JsonElement>();
                 var url = $"list/{data.GetProperty("id")}";
-                AppState.ReloadLists(await HttpClient.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists"));
+                await AppState.ReloadLists();
                 NavigationManager.NavigateTo(url);
             }
         }

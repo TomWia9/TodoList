@@ -14,12 +14,24 @@ namespace TodoList.Client.Shared
 
         public event Action OnNewListCreated;
 
-        public void ReloadLists(IEnumerable<ListOfTodosDto> listOfTodos)
+        private readonly HttpClient _http;
+
+        public AppState(HttpClient http)
         {
-            ListsOfTodos = listOfTodos;
+            _http = http;
+        }
+
+        public async Task ReloadLists()
+        {
+            ListsOfTodos = await _http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
             NotifyStateChanged();
         }
 
         private void NotifyStateChanged() => OnNewListCreated?.Invoke();
+
+        //public async Task<ListOfTodosDto> GetListOfTodos(int listId)
+        //{
+        //    return ListsOfTodos.FirstOrDefault(l => l.Id == listId);
+        //}
     }
 }

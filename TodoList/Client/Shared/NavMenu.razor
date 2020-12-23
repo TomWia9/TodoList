@@ -69,7 +69,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AppState.ReloadLists(await Http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists"));
+        await AppState.ReloadLists();
         AppState.OnNewListCreated += StateHasChanged;
     }
 

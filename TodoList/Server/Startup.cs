@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
-using Serilog;
 using TodoList.Server.Filters;
 
 namespace TodoList.Server
