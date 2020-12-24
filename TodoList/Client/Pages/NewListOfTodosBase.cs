@@ -22,6 +22,8 @@ namespace TodoList.Client.Pages
         protected NavigationManager NavigationManager { get; set; }
         [Inject]
         protected TodoListsService TodoListsService { get; set; }
+        [Inject]
+        protected AppStateContainer AppState { get; set; }
 
         protected ListOfTodosForCreationDto ListOfTodos { get; set; } = new ListOfTodosForCreationDto();
         protected bool CreationFailed { get; set; }
@@ -43,7 +45,8 @@ namespace TodoList.Client.Pages
             {
                 var data = await response.Content.ReadFromJsonAsync<JsonElement>();
                 var url = $"list/{data.GetProperty("id")}";
-                await TodoListsService.GetAllListsOfTodos();
+                AppState.GetAllListsOfTodos(await TodoListsService.GetAllListsOfTodos());
+                //maybe better solution will be something like AppState.AddListOfTodos(await TodoListsService.GetListOfTodos(response.createdAtOrSmth)), thanks to this just one list will be recived from api instead of all
                 NavigationManager.NavigateTo(url);
             }
         }

@@ -22,7 +22,8 @@ namespace TodoList.Client
 
             builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddSingleton<TodoListsService>();
+            builder.Services.AddScoped<TodoListsService>();
+            builder.Services.AddSingleton<AppStateContainer>();
 
             await builder.Build().RunAsync();
         }

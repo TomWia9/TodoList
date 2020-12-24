@@ -3,6 +3,7 @@
 @using TodoList.Shared.Dto
 @inject HttpClient Http
 @inject TodoListsService TodoListsService
+@inject AppStateContainer AppState
 @implements IDisposable
 
     <div class="top-row pl-4 navbar navbar-dark">
@@ -34,9 +35,9 @@
                     <span class="oi oi-list-rich" aria-hidden="true"></span> All
                 </NavLink>
             </li>
-            @if (TodoListsService.ListsOfTodos.Any())
+            @if (AppState.ListsOfTodos.Any())
             {
-                @foreach (var list in TodoListsService.ListsOfTodos)
+                @foreach (var list in AppState.ListsOfTodos)
                 {
                     var href = "list/" + list.Id;
                     <li class="nav-item px-3">
@@ -70,12 +71,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TodoListsService.GetAllListsOfTodos();
-        TodoListsService.OnNewListCreated += StateHasChanged;
+        AppState.GetAllListsOfTodos(await TodoListsService.GetAllListsOfTodos());
+        AppState.OnNewListCreated += StateHasChanged;
     }
 
     public void Dispose()
     {
-        TodoListsService.OnNewListCreated -= StateHasChanged;
+        AppState.OnNewListCreated -= StateHasChanged;
     }
 }

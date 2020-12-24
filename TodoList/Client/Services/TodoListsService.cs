@@ -10,10 +10,6 @@ namespace TodoList.Client.Services
 {
     public class TodoListsService
     {
-        public IEnumerable<ListOfTodosDto> ListsOfTodos = new List<ListOfTodosDto>();
-
-        public event Action OnNewListCreated;
-
         private readonly HttpClient _http;
 
         public TodoListsService(HttpClient http)
@@ -21,10 +17,9 @@ namespace TodoList.Client.Services
             _http = http;
         }
 
-        public async Task GetAllListsOfTodos()
+        public async Task<IEnumerable<ListOfTodosDto>> GetAllListsOfTodos()
         {
-            ListsOfTodos = await _http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
-            NotifyStateChanged();
+            return await _http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
         }
 
         public async Task<ListOfTodosDto> GetListOfTodos(int listId)
@@ -37,8 +32,5 @@ namespace TodoList.Client.Services
             return await _http.GetFromJsonAsync<int>($"api/lists/{listId}/NumberOfIncompletedTodos");
         }
 
-        private void NotifyStateChanged() => OnNewListCreated?.Invoke();
-
-        
     }
 }
