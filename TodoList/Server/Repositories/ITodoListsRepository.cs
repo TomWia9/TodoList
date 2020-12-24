@@ -13,7 +13,6 @@ namespace TodoList.Server.Repositories
         Task<IEnumerable<int>> GetTodoListsIdsAsync();
         Task<bool> ListOfTodosExists(string title);
         Task<bool> ListOfTodosExists(int id);
-
         void UpdateTodoList(ListOfTodos listOfTodos);
         Task<int> GetNumberOfIncompletedTodos(int listOfTodosId);
         Task<int> GetNumberOfAllIncompletedTodos();

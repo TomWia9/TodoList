@@ -27,9 +27,14 @@ namespace TodoList.Client.Services
             NotifyStateChanged();
         }
 
-        public ListOfTodosDto GetListOfTodos(int listId)
+        public async Task<ListOfTodosDto> GetListOfTodos(int listId)
         {
-            return ListsOfTodos.FirstOrDefault(l => l.Id == listId);
+            return await _http.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{listId}");
+        }
+
+        public async Task<int> GetNumberOfIncompletedTodos(int listId)
+        {
+            return await _http.GetFromJsonAsync<int>($"api/lists/{listId}/NumberOfIncompletedTodos");
         }
 
         private void NotifyStateChanged() => OnNewListCreated?.Invoke();

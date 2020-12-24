@@ -68,8 +68,7 @@ namespace TodoList.Client.Pages
         {
             try
             {
-                ListOfTodos = await HttpClient.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{ListId}");
-               // ListOfTodos = await AppState.GetListOfTodos(ListId);
+                ListOfTodos = await TodoListsService.GetListOfTodos(ListId);
 
                 LoadFailed = false;
             }
@@ -82,7 +81,7 @@ namespace TodoList.Client.Pages
 
         private async Task GetNumberOfIncompletedTodos()
         {
-            NumberOfIncompletedTodos = await HttpClient.GetFromJsonAsync<int>($"api/lists/{ListId}/NumberOfIncompletedTodos");
+            NumberOfIncompletedTodos = await TodoListsService.GetNumberOfIncompletedTodos(ListId);
         }
 
         protected async Task ReloadListOfTodos()
