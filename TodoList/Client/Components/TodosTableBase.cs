@@ -8,7 +8,7 @@ using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
 
-namespace TodoList.Client.Pages
+namespace TodoList.Client.Components
 {
     public class TodosTableBase : ComponentBase
     {

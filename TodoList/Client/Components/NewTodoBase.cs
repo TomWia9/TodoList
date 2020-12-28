@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 using TodoList.Client.Services;
 using TodoList.Shared.Dto;
 
-namespace TodoList.Client.Pages
+namespace TodoList.Client.Components
 {
     public class NewTodoBase : ComponentBase
     {
