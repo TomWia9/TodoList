@@ -17,8 +17,6 @@ namespace TodoList.Client.Pages
     public class NewListOfTodosBase : ComponentBase
     {
         [Inject]
-        protected HttpClient HttpClient { get; set; }
-        [Inject]
         protected NavigationManager NavigationManager { get; set; }
         [Inject]
         protected TodoListsService TodoListsService { get; set; }

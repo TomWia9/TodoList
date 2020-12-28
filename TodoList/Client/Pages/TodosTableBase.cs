@@ -19,13 +19,13 @@ namespace TodoList.Client.Pages
         public EventCallback OnUpdated { get; set; }
 
         [Inject]
-        protected HttpClient HttpClient { get; set; }
-
-        [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
         protected TodoListsService TodoListsService { get; set; }
+
+        [Inject]
+        protected TodosService TodosService { get; set; }
 
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
@@ -47,16 +47,9 @@ namespace TodoList.Client.Pages
         {
             try
             {
-                todo.IsDone = !todo.IsDone;
-
-                var response = await HttpClient.PutAsJsonAsync(
-                    $"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}",
-                    new TodoForUpdateDto() { Title = todo.Title, Description = todo.Description, IsDone = todo.IsDone });
-
+                var response = await TodosService.UpdateStatus(todo);
                 UpdateFailed = !response.IsSuccessStatusCode;
-
                 await ReloadListOfTodos();
-
             }
             catch
             {
