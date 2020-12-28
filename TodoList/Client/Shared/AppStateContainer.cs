@@ -17,6 +17,14 @@ namespace TodoList.Client.Shared
             ListsOfTodos = listsOfTodos;
             NotifyStateChanged();
         }
+
+        public void AddListOfTodos(ListOfTodosDto listsOfTodos)
+        {
+            var lists = ListsOfTodos.ToList();
+            lists.Add(listsOfTodos);
+            ListsOfTodos = lists;
+            NotifyStateChanged();
+        }
         private void NotifyStateChanged() => OnNewListCreated?.Invoke();
 
     }

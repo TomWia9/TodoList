@@ -68,7 +68,7 @@ namespace TodoList.Client.Pages
         {
             try
             {
-                ListOfTodos = await TodoListsService.GetListOfTodos(ListId);
+                ListOfTodos = await TodoListsService.GetListOfTodosAsync(ListId);
 
                 LoadFailed = false;
             }
@@ -81,7 +81,7 @@ namespace TodoList.Client.Pages
 
         private async Task GetNumberOfIncompletedTodos()
         {
-            NumberOfIncompletedTodos = await TodoListsService.GetNumberOfIncompletedTodos(ListId);
+            NumberOfIncompletedTodos = await TodoListsService.GetNumberOfIncompletedTodosAsync(ListId);
         }
 
         protected async Task ReloadListOfTodos()

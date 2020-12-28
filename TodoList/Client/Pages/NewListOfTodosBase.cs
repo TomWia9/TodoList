@@ -25,13 +25,13 @@ namespace TodoList.Client.Pages
         [Inject]
         protected AppStateContainer AppState { get; set; }
 
-        protected ListOfTodosForCreationDto ListOfTodos { get; set; } = new ListOfTodosForCreationDto();
+        protected ListOfTodosForCreationDto ListOfTodos { get; set; } = new();
         protected bool CreationFailed { get; set; }
         protected bool ListAlreadyExists { get; set; }
 
         protected async Task CreateList()
         {
-            var response = await HttpClient.PostAsJsonAsync("api/lists", ListOfTodos);
+            var response = await TodoListsService.CreateList(ListOfTodos);
 
             if (response.StatusCode == HttpStatusCode.Conflict)
             {
@@ -43,11 +43,17 @@ namespace TodoList.Client.Pages
             }
             else
             {
-                var data = await response.Content.ReadFromJsonAsync<JsonElement>();
-                var url = $"list/{data.GetProperty("id")}";
-                AppState.GetAllListsOfTodos(await TodoListsService.GetAllListsOfTodos());
-                //maybe better solution will be something like AppState.AddListOfTodos(await TodoListsService.GetListOfTodos(response.createdAtOrSmth)), thanks to this just one list will be recived from api instead of all
-                NavigationManager.NavigateTo(url);
+                var listOfTodos = await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
+                if (listOfTodos != null)
+                {
+                    AppState.AddListOfTodos(await TodoListsService.GetListOfTodosAsync(listOfTodos.Id));
+                    var url = $"list/{listOfTodos.Id}";
+                    NavigationManager.NavigateTo(url);
+                }
+                else
+                {
+                    CreationFailed = true;
+                }
             }
         }
     }

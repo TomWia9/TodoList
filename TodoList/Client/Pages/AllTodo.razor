@@ -14,9 +14,6 @@ else
 
     @foreach (var todoListId in TodoListsIds)
     { 
-        <TodosTable ListId="todoListId" OnUpdated="async () => await LoadNumberOfAllIncompletedTodos()"></TodosTable>
+        <TodosTable ListId="todoListId" OnUpdated="async () => await TodoListsService.GetNumberOfAllIncompletedTodosAsync()"></TodosTable>
     }
 }
-
-
-

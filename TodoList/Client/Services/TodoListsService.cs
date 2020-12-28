@@ -17,19 +17,32 @@ namespace TodoList.Client.Services
             _http = http;
         }
 
-        public async Task<IEnumerable<ListOfTodosDto>> GetAllListsOfTodos()
+        public async Task<IEnumerable<ListOfTodosDto>> GetAllListsOfTodosAsync()
         {
             return await _http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
         }
 
-        public async Task<ListOfTodosDto> GetListOfTodos(int listId)
+        public async Task<ListOfTodosDto> GetListOfTodosAsync(int listId)
         {
             return await _http.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{listId}");
         }
 
-        public async Task<int> GetNumberOfIncompletedTodos(int listId)
+        public async Task<int> GetNumberOfIncompletedTodosAsync(int listId)
         {
             return await _http.GetFromJsonAsync<int>($"api/lists/{listId}/NumberOfIncompletedTodos");
+        }
+
+        public async Task<int> GetNumberOfAllIncompletedTodosAsync()
+        {
+            return await _http.GetFromJsonAsync<int>($"api/lists/NumberOfAllIncompletedTodos");
+        }
+        public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
+        {
+            return await _http.GetFromJsonAsync<IEnumerable<int>>($"api/lists/ids");
+        }
+        public async Task<HttpResponseMessage> CreateList(ListOfTodosForCreationDto listOfTodos)
+        {
+            return await _http.PostAsJsonAsync("api/lists", listOfTodos);
         }
 
     }
