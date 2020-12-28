@@ -23,11 +23,6 @@ namespace TodoList.Server.Repositories
             return todoList;
         }
 
-        public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
-        {
-            return await _context.ListsOfTodos.Select(l => l.Id).ToListAsync();
-        }
-
         public async Task<bool> ListOfTodosExists(string title)
         {
             return await _context.ListsOfTodos.AnyAsync(t => t.Title == title);
