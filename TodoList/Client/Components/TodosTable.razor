@@ -3,19 +3,20 @@
 @if (ListOfTodos != null)
 {
 
-    <div class="d-flex justify-content-between mb-4">
-        <h4>
-            @ListOfTodos.Title
-            <small>(@NumberOfIncompletedTodos todo not completed)</small>
-        </h4>
-        <button class="btn btn-danger" @onclick="() => DeleteListModal.Open()">Remove list</button>
-    </div>
-
-    <DeleteListModal @ref="DeleteListModal" ListId="@ListId" ListTitle="@ListTitle"></DeleteListModal>
-
     <div class="card mb-4">
+        <div class="card-header" style="background: rgb(5, 39, 103);">
+            <div class="d-flex justify-content-between mb-4 text-white">
+                <h4>
+                    @ListOfTodos.Title
+                    <small>(@NumberOfIncompletedTodos todo not completed)</small>
+                </h4>
+                <button class="btn btn-danger" @onclick="() => DeleteListModal.Open()">Remove list</button>
+            </div>
 
-        <div class="mb-4" style="overflow-y: auto; max-height: 400px">
+            <DeleteListModal @ref="DeleteListModal" ListId="@ListId" ListTitle="@ListTitle"></DeleteListModal>
+
+        </div>
+        <div style="overflow-y: auto; max-height: 400px">
             <div class="list-group">
                 @foreach (var todo in ListOfTodos.Todos)
                 {
@@ -41,7 +42,7 @@
             </div>
         </div>
 
-        <div class="card-footer">
+        <div class="card-footer border" >
             <NewTodo ListId="@ListOfTodos.Id" OnCreated="@(async () => await ReloadListOfTodos())"></NewTodo>
         </div>
     </div>
