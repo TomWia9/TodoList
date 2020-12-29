@@ -12,7 +12,7 @@ namespace TodoList.Client.Shared
 
         public event Action OnListsUpdate;
 
-        public void GetAllListsOfTodos(IEnumerable<ListOfTodosDto> listsOfTodos)
+        public void AddListsOfTodos(IEnumerable<ListOfTodosDto> listsOfTodos)
         {
             ListsOfTodos = listsOfTodos;
             NotifyStateChanged();
