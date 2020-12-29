@@ -3,7 +3,10 @@
 
 @if (!TodoListsIds.Any())
 {
-    <p><em>Loading...</em></p>
+    <div class="d-flex align-items-center text-secondary">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+    </div>
 }
 else
 {
