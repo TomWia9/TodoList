@@ -72,11 +72,11 @@
     protected override async Task OnInitializedAsync()
     {
         AppState.GetAllListsOfTodos(await TodoListsService.GetAllListsOfTodosAsync());
-        AppState.OnNewListCreated += StateHasChanged;
+        AppState.OnListsUpdate += StateHasChanged;
     }
 
     public void Dispose()
     {
-        AppState.OnNewListCreated -= StateHasChanged;
+        AppState.OnListsUpdate -= StateHasChanged;
     }
 }

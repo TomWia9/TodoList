@@ -1,0 +1,102 @@
+﻿@using TodoList.Client.Services
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete list</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (!_deleteFailed)
+                {
+                    <p>Are you sure that you want to delete @ListTitle list?</p>
+                }
+                else
+                {
+                    <h4 class="text-danger">Something went wrong, try again later</h4>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" @onclick="@(async () => await DeleteListAsync())">Delete list</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public int ListId { get; set; }
+
+    [Parameter]
+    public string ListTitle { get; set; }
+
+    [Inject]
+    protected TodoListsService TodoListsService { get; set; }
+
+    [Inject]
+    protected AppStateContainer AppState { get; set; }
+
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    private bool _deleteFailed = false;
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        Console.WriteLine(ListId);
+        Console.WriteLine(ListTitle);
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private async Task DeleteListAsync()
+    {
+        try
+        {
+            var response = await TodoListsService.DeleteList(ListId);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _deleteFailed = true;
+            }
+            else
+            {
+                _deleteFailed = false;
+                AppState.RemoveListOfTodos(ListId);
+                Close();
+                NavigationManager.NavigateTo("all");
+
+            }
+        }
+        catch
+        {
+            _deleteFailed = true;
+        }
+    }
+
+}

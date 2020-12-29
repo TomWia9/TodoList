@@ -19,7 +19,11 @@ namespace TodoList.Server.Repositories
         public async Task<ListOfTodos> GetTodoListAsync(int todoListId)
         {
             var todoList = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
-            todoList.Todos = todoList.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);
+            if (todoList != null)
+            {
+                todoList.Todos = todoList.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);
+            }
+            
             return todoList;
         }
 

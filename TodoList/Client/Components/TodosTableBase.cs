@@ -28,13 +28,15 @@ namespace TodoList.Client.Components
         protected TodosService TodosService { get; set; }
 
         protected ListOfTodosDto ListOfTodos { get; set; }
+        protected string ListTitle { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
-
+        protected DeleteListModal DeleteListModal { get; set; }
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();
+            ListTitle = ListOfTodos.Title;
             await GetNumberOfIncompletedTodos();
         }
 

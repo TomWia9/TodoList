@@ -10,7 +10,7 @@ namespace TodoList.Client.Shared
     {
         public IEnumerable<ListOfTodosDto> ListsOfTodos = new List<ListOfTodosDto>();
 
-        public event Action OnNewListCreated;
+        public event Action OnListsUpdate;
 
         public void GetAllListsOfTodos(IEnumerable<ListOfTodosDto> listsOfTodos)
         {
@@ -25,7 +25,19 @@ namespace TodoList.Client.Shared
             ListsOfTodos = lists;
             NotifyStateChanged();
         }
-        private void NotifyStateChanged() => OnNewListCreated?.Invoke();
+
+        public void RemoveListOfTodos(int listId)
+        {
+
+            var lists = ListsOfTodos.ToList();
+            var listToRemove = lists.Single(l => l.Id == listId);
+
+            lists.Remove(listToRemove);
+            ListsOfTodos = lists;
+            NotifyStateChanged();
+        }
+        
+        private void NotifyStateChanged() => OnListsUpdate?.Invoke();
 
     }
 }

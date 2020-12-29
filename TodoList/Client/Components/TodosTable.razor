@@ -3,27 +3,33 @@
 @if (ListOfTodos != null)
 {
 
-    <h4>
-        @ListOfTodos.Title
-        <small>(@NumberOfIncompletedTodos todo not completed)</small>
-    </h4>
+    <div class="d-flex justify-content-between mb-4">
+        <h4>
+            @ListOfTodos.Title
+            <small>(@NumberOfIncompletedTodos todo not completed)</small>
+        </h4>
+        <button class="btn btn-danger" @onclick="() => DeleteListModal.Open()">Remove list</button>
+    </div>
+
+    <DeleteListModal @ref="DeleteListModal" ListId="@ListId" ListTitle="@ListTitle"></DeleteListModal>
 
     <div class="card mb-4">
 
         <div class="mb-4" style="overflow-y: auto; max-height: 400px">
             <table class="table table-striped">
                 <thead class="thead-dark">
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Is done</th>
-                </tr>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Is done</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var todo in ListOfTodos.Todos)
-                {
-                    <tr>
-                        <td class="d-flex flex-column">@todo.Title
+                    @foreach (var todo in ListOfTodos.Todos)
+                    {
+                        <tr>
+                            <td class="d-flex flex-column">
+                                @todo.Title
                             @if ((DateTime.Now - todo.DateAdded).TotalMinutes <= 30 && !todo.IsDone)
                             {
                                 <small class="text-success"> (New)</small>
@@ -31,7 +37,7 @@
                         </td>
                         <td>@todo.Description</td>
                         <td>
-                            <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))"/>
+                            <input type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" />
                         </td>
                     </tr>
                 }
