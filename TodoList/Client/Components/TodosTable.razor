@@ -7,7 +7,7 @@
         <div class="card-header" style="background: rgb(5, 39, 103);">
             <div class="d-flex justify-content-between mb-4 text-white">
                 <div class="d-flex flex-column">
-                    <h4>
+                    <h4 class="mb-2">
                         @ListOfTodos.Title
                         <small>(@NumberOfIncompletedTodos todo not completed)</small>
                     </h4>
@@ -26,10 +26,20 @@
                 @foreach (var todo in ListOfTodos.Todos)
                 {
                     <div role="button" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-secondary mb-1" style="cursor: pointer">
+                        <input class="mb-1" type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))"/>
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">@todo.Title</h5>
+                            <h5 class="mb-1">
+                                @if (todo.IsDone)
+                                {
+                                    <del>@todo.Title</del>
+                                }
+                                else
+                                {
+                                    @todo.Title
+                                }
+                            </h5>
                             <button type="button" class="close" aria-label="Delete" @onclick="@(async () => await DeleteTodo(todo.Id))">
-                                <span aria-hidden="true">&times;</span>
+                                <span class="oi oi-trash" aria-hidden="true"></span>
                             </button>
                         </div>
                         <div class="d-flex flex-column">
