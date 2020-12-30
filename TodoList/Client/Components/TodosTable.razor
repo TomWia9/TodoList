@@ -34,7 +34,15 @@
                                 @todo.Description
                             </p>
                             }
-                            <small class="mt-2">Created @todo.DateAdded</small>
+
+                            <div class="d-flex flex-column">
+                                @if ((DateTime.Now - todo.DateAdded).TotalMinutes <= 30 && !todo.IsDone)
+                                {
+                                    <small class="text-success"> (New)</small>
+                                }
+                                <small class="mt-2">Created @todo.DateAdded</small>
+                            </div>
+                            
                         </div>
                     </div>
                 }

@@ -32,7 +32,7 @@ namespace TodoList.Client.Components
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
-        protected DeleteListModal DeleteListModal { get; set; }
+        protected DeleteListModal DeleteListModal; 
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();

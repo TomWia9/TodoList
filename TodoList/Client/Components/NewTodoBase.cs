@@ -25,8 +25,14 @@ namespace TodoList.Client.Components
 
         protected TodoForCreationDto TodoForCreation { get; set; } = new();
         protected  bool TodoAlreadyExists { get; set; }
-        protected bool? CreationFailed { get; set; }
+        protected bool CreationFailed { get; set; }
 
+        protected override void OnParametersSet()
+        {
+            TodoForCreation = new TodoForCreationDto();
+            CreationFailed = false;
+            TodoAlreadyExists = false;
+        }
 
         protected async Task CreateTodo()
         {
@@ -44,7 +50,6 @@ namespace TodoList.Client.Components
             { 
                 CreationFailed = false;
                await OnCreated.InvokeAsync();
-
             }
         }
     }
