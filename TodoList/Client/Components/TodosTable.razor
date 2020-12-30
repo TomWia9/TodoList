@@ -6,10 +6,15 @@
     <div class="card mb-4">
         <div class="card-header" style="background: rgb(5, 39, 103);">
             <div class="d-flex justify-content-between mb-4 text-white">
-                <h4>
-                    @ListOfTodos.Title
-                    <small>(@NumberOfIncompletedTodos todo not completed)</small>
-                </h4>
+                <div class="d-flex flex-column">
+                    <h4>
+                        @ListOfTodos.Title
+                        <small>(@NumberOfIncompletedTodos todo not completed)</small>
+                    </h4>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: @PercentOfDoneTodos;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">@PercentOfDoneTodos</div>
+                    </div>
+                </div>
                 <button class="btn btn-danger" @onclick="() => DeleteListModal.Open()">Remove list</button>
             </div>
 

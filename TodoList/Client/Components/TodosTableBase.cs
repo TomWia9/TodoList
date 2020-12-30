@@ -32,12 +32,15 @@ namespace TodoList.Client.Components
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
+        protected string PercentOfDoneTodos { get; set; }
+        
         protected DeleteListModal DeleteListModal; 
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();
             ListTitle = ListOfTodos.Title;
             await GetNumberOfIncompletedTodos();
+            GetPercentOfDoneTodos();
         }
 
         protected void NavigateToNewListComponent()
@@ -77,6 +80,22 @@ namespace TodoList.Client.Components
         private async Task GetNumberOfIncompletedTodos()
         {
             NumberOfIncompletedTodos = await TodoListsService.GetNumberOfIncompletedTodosAsync(ListId);
+        }
+
+        private void GetPercentOfDoneTodos()
+        {
+            if (NumberOfIncompletedTodos == 0)
+            {
+                PercentOfDoneTodos = "100%";
+            }
+            else
+            {
+                var percent = (int)((ListOfTodos.Todos.Count() - NumberOfIncompletedTodos) / (ListOfTodos.Todos.Count() / 100.00));
+
+                PercentOfDoneTodos = percent + "%";
+            }
+            
+            Console.WriteLine(PercentOfDoneTodos);
         }
 
         protected async Task ReloadListOfTodos()
