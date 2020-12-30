@@ -28,16 +28,16 @@
                     <div role="button" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-secondary mb-1" style="cursor: pointer">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">@todo.Title</h5>
-                            <button type="button" class="close" aria-label="Delete">
+                            <button type="button" class="close" aria-label="Delete" @onclick="@(async () => await DeleteTodo(todo.Id))">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="d-flex flex-column">
                             @if (!string.IsNullOrWhiteSpace(todo.Description))
                             {
-                            <p class="mb-1">
-                                @todo.Description
-                            </p>
+                                <p class="mb-1">
+                                    @todo.Description
+                                </p>
                             }
 
                             <div class="d-flex flex-column">
@@ -47,15 +47,15 @@
                                 }
                                 <small class="mt-2">Created @todo.DateAdded</small>
                             </div>
-                            
+
                         </div>
                     </div>
                 }
-                
+
             </div>
         </div>
 
-        <div class="card-footer border" >
+        <div class="card-footer border">
             <NewTodo ListId="@ListOfTodos.Id" OnCreated="@(async () => await ReloadListOfTodos())"></NewTodo>
         </div>
     </div>
@@ -72,6 +72,12 @@ else if (UpdateFailed)
 {
 
     <h2>Update failed, try again later</h2>
+}
+
+else if (UpdateFailed)
+{
+
+    <h2>Delete failed, try again later</h2>
 }
 
 else

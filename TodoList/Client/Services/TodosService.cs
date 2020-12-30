@@ -30,5 +30,10 @@ namespace TodoList.Client.Services
         {
             return await _http.PostAsJsonAsync($"api/lists/{listId}/todos", todo);
         }
+
+        public async Task<HttpResponseMessage> DeleteTodo(int listId, int todoId)
+        {
+            return await _http.DeleteAsync($"api/lists/{listId}/todos/{todoId}");
+        }
     }
 }

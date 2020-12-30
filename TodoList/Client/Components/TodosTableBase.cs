@@ -32,6 +32,7 @@ namespace TodoList.Client.Components
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool LoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
+        protected bool DeleteFailed { get; set; }
         protected string PercentOfDoneTodos { get; set; }
         
         protected DeleteListModal DeleteListModal; 
@@ -59,6 +60,20 @@ namespace TodoList.Client.Components
             catch
             {
                 UpdateFailed = true;
+            }
+        }
+
+        protected async Task DeleteTodo(int todoId)
+        {
+            try
+            {
+                var response = await TodosService.DeleteTodo(ListId, todoId);
+                DeleteFailed = !response.IsSuccessStatusCode;
+                await ReloadListOfTodos();
+            }
+            catch
+            {
+                DeleteFailed = true;
             }
         }
 
@@ -94,14 +109,13 @@ namespace TodoList.Client.Components
 
                 PercentOfDoneTodos = percent + "%";
             }
-            
-            Console.WriteLine(PercentOfDoneTodos);
         }
 
         protected async Task ReloadListOfTodos()
         {
             await GetListOfTodos();
             await GetNumberOfIncompletedTodos();
+            GetPercentOfDoneTodos();
             await OnUpdated.InvokeAsync();
         }
     }
