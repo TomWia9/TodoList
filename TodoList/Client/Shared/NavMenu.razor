@@ -29,36 +29,43 @@
                     <span class="oi oi-plus" aria-hidden="true"></span> New list
                 </NavLink>
             </li>
-            
-            @if (AppState.ListsOfTodos.Any())
-            {
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="all">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> All
-                    </NavLink>
-                </li>
-                
-                @foreach (var list in AppState.ListsOfTodos)
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="all">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> All
+                </NavLink>
+            </li>
+        </ul>
+        
+        <hr class="bg-secondary"/>
+
+        <div style="overflow-y: auto; max-height: 400px; ">
+
+            <ul class="nav flex-column">
+                @if (AppState.ListsOfTodos.Any())
                 {
-                    var href = "list/" + list.Id;
+                    @foreach (var list in AppState.ListsOfTodos)
+                    {
+                        var href = "list/" + list.Id;
+                        <li class="nav-item px-3">
+                            <NavLink class="nav-link" href=@href>
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> @list.Title
+                            </NavLink>
+                        </li>
+                    }
+                }
+                else
+                {
                     <li class="nav-item px-3">
-                        <NavLink class="nav-link" href=@href>
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> @list.Title
-                        </NavLink>
+                        <div class="d-flex align-items-center text-secondary">
+                            <strong>Loading...</strong>
+                            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                        </div>
                     </li>
                 }
-            }
-            else
-            {
-                <li class="nav-item px-3">
-                    <div class="d-flex align-items-center text-secondary">
-                        <strong>Loading...</strong>
-                        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div>
-                </li>
-            }
 
-        </ul>
+            </ul>
+        </div>
+
     </div>
 
 

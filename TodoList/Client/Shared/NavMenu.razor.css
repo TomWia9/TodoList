@@ -23,13 +23,13 @@
     padding-bottom: 0.5rem;
 }
 
-    .nav-item:first-of-type {
+   /* .nav-item:first-of-type {
         padding-top: 1rem;
     }
 
     .nav-item:last-of-type {
         padding-bottom: 1rem;
-    }
+    }*/
 
     .nav-item ::deep a {
         color: #d7d7d7;
@@ -59,4 +59,23 @@
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: gray;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #D5D4D4;
 }
