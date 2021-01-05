@@ -173,21 +173,8 @@ namespace TodoList.Server.Controllers
                 var todoToPatch = _mapper.Map<TodoForUpdateDto>(todoFromRepo);
                 patchDocument.ApplyTo(todoToPatch, ModelState);
 
-                //// Trigger validation manually
-                //var validationResult = await new TodoForUpdateValidator().ValidateAsync(todoToPatch);
-                //if (!validationResult.IsValid)
-                //{
-                //    // Add validation errors to ModelState
-                //    foreach (var error in validationResult.Errors)
-                //    {
-                //        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                //    }
-
-                //    // Patch failed, return 400 result
-                //    return BadRequest(ModelState);
-                //}
-
-                if (await _todoRepository.TodoExists(listOfTodosId, todoToPatch.Title))
+                //check if todo with new title exists (there cannot be 2 todos with the same title)
+                if (await _todoRepository.TodoExists(listOfTodosId, todoToPatch.Title, todoId))
                 {
                     return Conflict();
                 }

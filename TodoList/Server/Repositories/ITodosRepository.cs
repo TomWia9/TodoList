@@ -11,6 +11,8 @@ namespace TodoList.Server.Repositories
         Task<IEnumerable<Todo>> GetTodosAsync(int listOfTodosId);
         Task<Todo> GetTodoAsync(int listOfTodosId, int todoId);
         Task<bool> ListOfTodosExists(int listOfTodosId);
+
+        //todoId is optional because its not necessary during creating new todo but its required during updating todo
         Task<bool> TodoExists(int listOfTodosId, string title, int? todoId = null);
         void UpdateTodo(Todo todo);
 
