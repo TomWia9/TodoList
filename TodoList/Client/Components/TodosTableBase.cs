@@ -35,7 +35,8 @@ namespace TodoList.Client.Components
         protected bool DeleteFailed { get; set; }
         protected string PercentOfDoneTodos { get; set; }
         
-        protected DeleteListModal DeleteListModal; 
+        protected DeleteListModal DeleteListModal;
+        protected TodoDetailsModal TodoDetailsModal;
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();

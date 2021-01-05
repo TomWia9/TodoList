@@ -1,0 +1,153 @@
+﻿@using TodoList.Client.Services
+@using TodoList.Shared.Dto
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <EditForm Model="@TodoForUpdate" OnValidSubmit="@(async () => await SaveChangesAsync())">
+                <div class="modal-body">
+                    @if (!_updateFailed)
+                    {
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <InputText @bind-Value="TodoForUpdate.Title" class="form-control" id="title"/>
+                            <ValidationMessage For="@(() => TodoForUpdate.Title)"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <InputTextArea @bind-Value="TodoForUpdate.Description" class="form-control" id="description" rows="3" style="resize: none;"/>
+                            <ValidationMessage For="@(() => TodoForUpdate.Description)"/>
+                        </div>
+
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="TodoForUpdate.IsDone" class="form-check-input" id="isDone"/>
+                            <label class="form-check-label" for="isDone">Done</label>
+                            <ValidationMessage For="@(() => TodoForUpdate.IsDone)" />
+                        </div>
+                    }
+                    else if(_updateFailed)
+                    {
+                        <p class="text-danger">Failed to update todo, try again later</p>
+                    }
+                    else if (_deleteFailed)
+                    {
+                        <p class="text-danger">Failed to delete todo, try again later</p>
+                    }
+
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+
+                    <button type="button" class="close" aria-label="Delete" @onclick="@(async () => await DeleteTodoAsync())">
+                        <span class="oi oi-trash" aria-hidden="true"></span>
+                    </button>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    </div>
+                </div>
+            </EditForm>
+
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    private int _listId;
+    private int _todoId;
+    private TodoForUpdateDto TodoForUpdate { get; set; } = new();
+
+    [Inject]
+    protected TodosService TodosService { get; set; }
+
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public EventCallback OnTodoUpdated { get; set; }
+
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    private bool _deleteFailed = false;
+    private bool _updateFailed = false;
+
+    public void Open(TodoDto todo)
+    {
+        _listId = todo.ListOfTodosId;
+        _todoId = todo.Id;
+
+        TodoForUpdate.Title = todo.Title;
+        TodoForUpdate.Description = todo.Description;
+        TodoForUpdate.IsDone = todo.IsDone;
+
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        _updateFailed = false;
+        _deleteFailed = false;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private async Task SaveChangesAsync()
+    {
+        var response = await TodosService.UpdateTodo(_listId, _todoId, TodoForUpdate);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _updateFailed = false;
+            await OnTodoUpdated.InvokeAsync();
+            Close();
+        }
+        else
+        {
+            _updateFailed = true;
+        }
+
+    }
+
+    private async Task DeleteTodoAsync()
+    {
+        var response = await TodosService.DeleteTodo(_listId, _todoId);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _deleteFailed = false;
+            await OnTodoUpdated.InvokeAsync();
+            Close();
+        }
+        else
+        {
+            _deleteFailed = true;
+        }
+
+    }
+
+}

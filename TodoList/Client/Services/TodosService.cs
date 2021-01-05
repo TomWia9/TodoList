@@ -21,6 +21,7 @@ namespace TodoList.Client.Services
         {
             todo.IsDone = !todo.IsDone;
             
+            //this should be http.PATCH
             return await _http.PutAsJsonAsync(
                 $"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}",
                 new TodoForUpdateDto() { Title = todo.Title, Description = todo.Description, IsDone = todo.IsDone });
@@ -29,6 +30,11 @@ namespace TodoList.Client.Services
         public async Task<HttpResponseMessage> CreateTodo(int listId, TodoForCreationDto todo)
         {
             return await _http.PostAsJsonAsync($"api/lists/{listId}/todos", todo);
+        }
+
+        public async Task<HttpResponseMessage> UpdateTodo(int listId, int todoId, TodoForUpdateDto todo)
+        {
+            return await _http.PutAsJsonAsync($"api/lists/{listId}/Todos/{todoId}", todo);
         }
 
         public async Task<HttpResponseMessage> DeleteTodo(int listId, int todoId)
