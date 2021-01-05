@@ -1,14 +1,7 @@
 ﻿@page "/all"
 @inherits AllTodoBase
 
-@if (!TodoListsIds.Any())
-{
-    <div class="d-flex align-items-center text-secondary">
-        <strong>Loading...</strong>
-        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-    </div>
-}
-else
+@if (TodoListsIds.Any())
 {
     <h2>
         All lists of todos
@@ -16,7 +9,20 @@ else
     </h2>
 
     @foreach (var todoListId in TodoListsIds)
-    { 
+    {
         <TodosTable ListId="todoListId" OnUpdated="async () => await TodoListsService.GetNumberOfAllIncompletedTodosAsync()"></TodosTable>
     }
+
+}
+else if (!AppState.ListsOfTodos.Any())
+{
+    <strong>No list exists</strong>
+}
+
+else
+{
+    <div class="d-flex align-items-center text-secondary">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+    </div>
 }

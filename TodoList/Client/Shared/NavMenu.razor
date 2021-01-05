@@ -53,6 +53,14 @@
                         </li>
                     }
                 }
+
+                else if(noListExists)
+                {
+                    <li class="nav-item px-3">
+                        <strong class="text-white">No list exists</strong>
+                    </li>
+                }
+
                 else
                 {
                     <li class="nav-item px-3">
@@ -72,6 +80,7 @@
 
 @code {
     private bool collapseNavMenu = true;
+    private bool noListExists = false;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -82,7 +91,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AppState.AddListsOfTodos(await TodoListsService.GetAllListsOfTodosAsync());
+        var todoLists = await TodoListsService.GetAllListsOfTodosAsync();
+
+        if (!todoLists.Any())
+        {
+            noListExists = true;
+        }
+
+        else
+        {
+            AppState.AddListsOfTodos(todoLists);
+            noListExists = false;
+        }
+
         AppState.OnListsUpdate += StateHasChanged;
     }
 
