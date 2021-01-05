@@ -52,7 +52,7 @@ namespace TodoList.Server.Controllers
                 if (await _dbRepository.SaveChangesAsync())
                 {
                     return CreatedAtAction(nameof(GetTodoOfList),
-                        new {listOfTodosId = listOfTodosId, todoId = newTodo.Id}, _mapper.Map<TodoDto>(newTodo));
+                        new { listOfTodosId, todoId = newTodo.Id}, _mapper.Map<TodoDto>(newTodo));
                 }
             }
 
