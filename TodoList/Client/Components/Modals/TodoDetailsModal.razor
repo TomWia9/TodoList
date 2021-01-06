@@ -1,5 +1,6 @@
 ﻿@using TodoList.Client.Services
 @using TodoList.Shared.Dto
+@using System.Net
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
@@ -12,11 +13,24 @@
             </div>
 
             <EditForm Model="@TodoForUpdate" OnValidSubmit="@(async () => await SaveChangesAsync())">
-                <div class="modal-body">
-                    @if (!_updateFailed)
-                    {
-                        <DataAnnotationsValidator />
+                <DataAnnotationsValidator />
 
+                <div class="modal-body">
+                    
+                    @if (_updateConflict)
+                    {
+                        <p class="text-danger">Todo with this title already exists</p>
+                    }
+                    else if (_updateFailed)
+                    {
+                        <p class="text-danger">Failed to update todo, try again later</p>
+                    }
+                    else if (_deleteFailed)
+                    {
+                        <p class="text-danger">Failed to delete todo, try again later</p>
+                    }
+                    else 
+                    {
                         <div class="form-group">
                             <label for="title">Title</label>
                             <InputText @bind-Value="TodoForUpdate.Title" class="form-control" id="title"/>
@@ -32,18 +46,9 @@
                         <div class="form-check">
                             <InputCheckbox @bind-Value="TodoForUpdate.IsDone" class="form-check-input" id="isDone"/>
                             <label class="form-check-label" for="isDone">Done</label>
-                            <ValidationMessage For="@(() => TodoForUpdate.IsDone)" />
+                            <ValidationMessage For="@(() => TodoForUpdate.IsDone)"/>
                         </div>
                     }
-                    else if(_updateFailed)
-                    {
-                        <p class="text-danger">Failed to update todo, try again later</p>
-                    }
-                    else if (_deleteFailed)
-                    {
-                        <p class="text-danger">Failed to delete todo, try again later</p>
-                    }
-
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
 
@@ -90,6 +95,7 @@
 
     private bool _deleteFailed = false;
     private bool _updateFailed = false;
+    private bool _updateConflict = false;
 
     public void Open(TodoDto todo)
     {
@@ -105,6 +111,7 @@
         ShowBackdrop = true;
         _updateFailed = false;
         _deleteFailed = false;
+        _updateConflict = false;
         StateHasChanged();
     }
 
@@ -125,6 +132,10 @@
             _updateFailed = false;
             await OnTodoUpdated.InvokeAsync();
             Close();
+        }
+        else if (response.StatusCode == HttpStatusCode.Conflict)
+        {
+            _updateConflict = true;
         }
         else
         {
