@@ -37,6 +37,9 @@ namespace TodoList.Client.Components
         
         protected DeleteListModal DeleteListModal;
         protected TodoDetailsModal TodoDetailsModal;
+
+        protected string ProgressBarCssClass => PercentOfDoneTodos.Equals("0%") ? "text-dark" : null;
+
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();

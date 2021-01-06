@@ -12,7 +12,7 @@
                         <small>(@NumberOfIncompletedTodos of @ListOfTodos.Todos.Count() todos not completed)</small>
                     </h4>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: @PercentOfDoneTodos;" aria-valuenow="@PercentOfDoneTodos" aria-valuemin="0" aria-valuemax="100">@PercentOfDoneTodos</div>
+                        <div class="progress-bar @ProgressBarCssClass" role="progressbar" style="width: @PercentOfDoneTodos;" aria-valuenow="@PercentOfDoneTodos" aria-valuemin="0" aria-valuemax="100">@PercentOfDoneTodos</div>
                     </div>
                 </div>
                 <button class="btn btn-danger" @onclick="() => DeleteListModal.Open()">Remove list</button>
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <div class="card-footer border">
+        <div class="card-footer bg-dark mt-n1">
             <NewTodo ListId="@ListOfTodos.Id" OnCreated="@(async () => await ReloadListOfTodos())"></NewTodo>
         </div>
     </div>
