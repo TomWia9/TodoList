@@ -32,20 +32,20 @@
                     else 
                     {
                         <div class="form-group">
-                            <label for="title">Title</label>
-                            <InputText @bind-Value="TodoForUpdate.Title" class="form-control" id="title"/>
+                            <label>Title</label>
+                            <InputText @bind-Value="TodoForUpdate.Title" class="form-control"/>
                             <ValidationMessage For="@(() => TodoForUpdate.Title)"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Description</label>
-                            <InputTextArea @bind-Value="TodoForUpdate.Description" class="form-control" id="description" rows="3" style="resize: none;"/>
+                            <label>Description</label>
+                            <InputTextArea @bind-Value="TodoForUpdate.Description" class="form-control" rows="3" style="resize: none;"/>
                             <ValidationMessage For="@(() => TodoForUpdate.Description)"/>
                         </div>
 
                         <div class="form-check">
-                            <InputCheckbox @bind-Value="TodoForUpdate.IsDone" class="form-check-input" id="isDone"/>
-                            <label class="form-check-label" for="isDone">Done</label>
+                            <InputCheckbox @bind-Value="TodoForUpdate.IsDone" class="form-check-input" />
+                            <label class="form-check-label">Done</label>
                             <ValidationMessage For="@(() => TodoForUpdate.IsDone)"/>
                         </div>
                     }

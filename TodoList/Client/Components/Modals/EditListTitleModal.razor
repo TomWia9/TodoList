@@ -27,8 +27,8 @@
                     else
                     {
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <InputText @bind-Value="ListOfTodosForUpdate.Title" class="form-control" id="name"/>
+                            <label>Name</label>
+                            <InputText @bind-Value="ListOfTodosForUpdate.Title" class="form-control"/>
                             <ValidationMessage For="@(() => ListOfTodosForUpdate.Title)"/>
                         </div>
                     }

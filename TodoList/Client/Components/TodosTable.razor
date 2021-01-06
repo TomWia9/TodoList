@@ -11,7 +11,7 @@
                         @ListOfTodos.Title
                     </h4>
                     <div class="w-50 d-flex flex-column my-2 ">
-                        <small>(@NumberOfIncompletedTodos of @ListOfTodos.Todos.Count() todos not completed)</small>
+                        <small>(@(ListOfTodos.Todos.Count() - NumberOfIncompletedTodos) of @ListOfTodos.Todos.Count() todos completed)</small>
                         <div class="progress">
                             <div class="progress-bar @ProgressBarCssClass" role="progressbar" style="width: @PercentOfDoneTodos;" aria-valuenow="@PercentOfDoneTodos" aria-valuemin="0" aria-valuemax="100">@PercentOfDoneTodos</div>
                         </div>
@@ -28,48 +28,12 @@
             <EditListTitleModal @ref="EditListTitleModal" ListId="@ListId" ListTitle="@ListOfTodos.Title" OnTodoListUpdated="@(async () => await ReloadListOfTodos())"></EditListTitleModal>
 
         </div>
-        <div style="overflow-y: auto; max-height: 400px">
+        <div style="overflow-y: auto; max-height: 380px">
             <div class="list-group">
                 @foreach (var todo in ListOfTodos.Todos)
                 {
-                <div role="button" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-secondary mb-1" style="cursor: pointer" @onclick="() => TodoDetailsModal.Open(todo)">
-
-                    <input class="mb-1" type="checkbox" @bind="todo.IsDone" @onclick="@(async () => await UpdateStatus(todo))" @onclick:stopPropagation="true"/>
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">
-                            @if (todo.IsDone)
-                            {
-                                <del>@todo.Title</del>
-                            }
-                            else
-                            {
-                                @todo.Title
-                            }
-                        </h5>
-                        <button type="button" class="close" aria-label="Delete" @onclick="@(async () => await DeleteTodo(todo.Id))" @onclick:stopPropagation="true">
-                            <span class="oi oi-trash" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="d-flex flex-column">
-                        @if (!string.IsNullOrWhiteSpace(todo.Description))
-                        {
-                            <p class="mb-1 text-break">
-                                @todo.Description
-                            </p>
-                        }
-
-                        <div class="d-flex flex-column">
-                            @if ((DateTime.Now - todo.DateAdded).TotalMinutes <= 30 && !todo.IsDone)
-                            {
-                                <small class="text-success"> (New)</small>
-                            }
-                            <small class="mt-2">Created @todo.DateAdded</small>
-                        </div>
-
-                    </div>
-                </div>
+                    <TodoElement Todo="todo" OnUpdated="@(async () => await ReloadListOfTodos())" OnDetailsClick="() => TodoDetailsModal.Open(todo)"></TodoElement>
                 }
-
                 <TodoDetailsModal @ref="TodoDetailsModal" OnTodoUpdated="@(async () => await ReloadListOfTodos())"></TodoDetailsModal>
 
             </div>
@@ -87,19 +51,6 @@ else if (ListLoadFailed)
     <h2>List doesn't exists. Do you want to create new list?</h2>
     <button class="btn btn-primary" @onclick="NavigateToNewListComponent">New list</button>
 }
-
-else if (UpdateFailed)
-{
-
-    <h2>Update failed, try again later</h2>
-}
-
-else if (UpdateFailed)
-{
-
-    <h2>Delete failed, try again later</h2>
-}
-
 else
 {
     <div class="d-flex align-items-center text-secondary mb-4">

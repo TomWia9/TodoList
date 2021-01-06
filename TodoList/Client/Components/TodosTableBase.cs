@@ -25,19 +25,14 @@ namespace TodoList.Client.Components
         [Inject]
         protected TodoListsService TodoListsService { get; set; }
 
-        [Inject]
-        protected TodosService TodosService { get; set; }
-
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool ListLoadFailed { get; set; }
-        protected bool UpdateFailed { get; set; }
-        protected bool DeleteFailed { get; set; }
         protected string PercentOfDoneTodos { get; set; }
         
         protected DeleteListModal DeleteListModal;
-        protected TodoDetailsModal TodoDetailsModal;
         protected EditListTitleModal EditListTitleModal;
+        protected TodoDetailsModal TodoDetailsModal;
 
         protected string ProgressBarCssClass => PercentOfDoneTodos.Equals("0%") ? "text-dark" : null;
 
@@ -55,34 +50,6 @@ namespace TodoList.Client.Components
         protected void NavigateToNewListComponent()
         {
             NavigationManager.NavigateTo("lists/new");
-        }
-
-        protected async Task UpdateStatus(TodoDto todo)
-        {
-            try
-            {
-                var response = await TodosService.UpdateStatus(todo);
-                UpdateFailed = !response.IsSuccessStatusCode;
-                await ReloadListOfTodos();
-            }
-            catch
-            {
-                UpdateFailed = true;
-            }
-        }
-
-        protected async Task DeleteTodo(int todoId)
-        {
-            try
-            {
-                var response = await TodosService.DeleteTodo(ListId, todoId);
-                DeleteFailed = !response.IsSuccessStatusCode;
-                await ReloadListOfTodos();
-            }
-            catch
-            {
-                DeleteFailed = true;
-            }
         }
 
         private async Task GetListOfTodos()

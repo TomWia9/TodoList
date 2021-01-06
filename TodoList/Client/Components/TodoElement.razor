@@ -1,0 +1,49 @@
+﻿@inherits TodoElementBase
+
+<div role="button" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-secondary mb-1" style="cursor: pointer" @onclick="@(async () => await OnDetailsClick.InvokeAsync())">
+
+    <input class="mb-1" type="checkbox" @bind="Todo.IsDone" @onclick="@(async () => await UpdateStatus())" @onclick:stopPropagation="true"/>
+    <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">
+            @if (Todo.IsDone)
+            {
+                <del>@Todo.Title</del>
+            }
+            else
+            {
+                @Todo.Title
+            }
+        </h5>
+        <button type="button" class="close" aria-label="Delete" @onclick="@(async () => await DeleteTodo())" @onclick:stopPropagation="true">
+            <span class="oi oi-trash" aria-hidden="true"></span>
+        </button>
+    </div>
+    <div class="d-flex flex-column">
+        @if (!string.IsNullOrWhiteSpace(Todo.Description))
+        {
+            <p class="mb-1 text-break">
+                @Todo.Description
+            </p>
+        }
+
+        <div class="d-flex flex-column">
+            @if ((DateTime.Now - Todo.DateAdded).TotalMinutes <= 30 && !Todo.IsDone)
+            {
+                <small class="text-success"> (New)</small>
+            }
+            <small class="mt-2">Created @Todo.DateAdded</small>
+        </div>
+
+    </div>
+    
+    @if (UpdateFailed)
+    {
+        <p class="text-danger">Status update failed, try again later</p>
+    }
+
+    @if (DeleteFailed)
+    {
+        <p class="text-danger">Delete failed, try again later</p>
+    }
+</div>
+
