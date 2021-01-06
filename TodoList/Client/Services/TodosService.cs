@@ -21,17 +21,10 @@ namespace TodoList.Client.Services
 
         public async Task<HttpResponseMessage> UpdateStatus(TodoDto todo)
         {
-            //todo.IsDone = !todo.IsDone;
-
             var patchDocument = new JsonPatchDocument<TodoForUpdateDto>().Replace(o => o.IsDone, !todo.IsDone);
 
             return await _http.PatchAsync($"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}",
                 patchDocument);
-
-            //this should be http.PATCH
-            //return await _http.PutAsJsonAsync(
-            //    $"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}",
-            //    new TodoForUpdateDto() { Title = todo.Title, Description = todo.Description, IsDone = todo.IsDone });
         }
 
         public async Task<HttpResponseMessage> CreateTodo(int listId, TodoForCreationDto todo)

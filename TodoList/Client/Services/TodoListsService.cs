@@ -36,10 +36,18 @@ namespace TodoList.Client.Services
         {
             return await _http.GetFromJsonAsync<int>($"api/lists/NumberOfAllIncompletedTodos");
         }
+
+        //probably unnecessary
         public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
         {
             return await _http.GetFromJsonAsync<IEnumerable<int>>($"api/lists/ids");
         }
+
+        public async Task<HttpResponseMessage> UpdateList(int listId, ListOfTodosForUpdateDto listOfTodos)
+        {
+            return await _http.PutAsJsonAsync($"api/lists/{listId}", listOfTodos);
+        }
+
         public async Task<HttpResponseMessage> CreateList(ListOfTodosForCreationDto listOfTodos)
         {
             return await _http.PostAsJsonAsync("api/lists", listOfTodos);

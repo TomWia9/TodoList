@@ -45,7 +45,7 @@ namespace TodoList.Client.Pages
                 if (listOfTodos != null)
                 {
                     AppState.AddListOfTodos(await TodoListsService.GetListOfTodosAsync(listOfTodos.Id));
-                    var url = $"list/{listOfTodos.Id}";
+                    var url = $"lists/{listOfTodos.Id}";
                     NavigationManager.NavigateTo(url);
                 }
                 else

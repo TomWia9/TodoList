@@ -48,7 +48,8 @@
                         var href = "lists/" + list.Id;
                         <li class="nav-item px-3">
                             <NavLink class="nav-link" href=@href>
-                                <span class="oi oi-list-rich" aria-hidden="true"></span> @list.Title
+                                <span class="oi oi-list-rich" aria-hidden="true"></span>
+                                <span class="d-inline-block text-truncate" style="max-width: 150px;">@list.Title</span>
                             </NavLink>
                         </li>
                     }

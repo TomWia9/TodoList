@@ -36,7 +36,20 @@ namespace TodoList.Client.Shared
             ListsOfTodos = lists;
             NotifyStateChanged();
         }
-        
+
+        public void UpdateListTitle(int listId, string newTitle)
+        {
+
+            var lists = ListsOfTodos.ToList();
+            var index = lists.FindIndex(l => l.Id == listId);
+            
+            if (index > -1)
+                lists[index].Title = newTitle;
+            
+            ListsOfTodos = lists;
+            NotifyStateChanged();
+        }
+
         private void NotifyStateChanged() => OnListsUpdate?.Invoke();
 
     }

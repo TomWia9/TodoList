@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using TodoList.Client.Components.Modals;
 using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
@@ -28,7 +29,6 @@ namespace TodoList.Client.Components
         protected TodosService TodosService { get; set; }
 
         protected ListOfTodosDto ListOfTodos { get; set; }
-        protected string ListTitle { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool ListLoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
@@ -37,6 +37,7 @@ namespace TodoList.Client.Components
         
         protected DeleteListModal DeleteListModal;
         protected TodoDetailsModal TodoDetailsModal;
+        protected EditListTitleModal EditListTitleModal;
 
         protected string ProgressBarCssClass => PercentOfDoneTodos.Equals("0%") ? "text-dark" : null;
 
@@ -46,7 +47,6 @@ namespace TodoList.Client.Components
 
             if (!ListLoadFailed)
             {
-                ListTitle = ListOfTodos.Title;
                 await GetNumberOfIncompletedTodos();
                 GetPercentOfDoneTodos();
             }

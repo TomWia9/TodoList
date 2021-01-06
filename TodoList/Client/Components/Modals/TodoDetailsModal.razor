@@ -73,7 +73,7 @@
 
     private int _listId;
     private int _todoId;
-    private TodoForUpdateDto TodoForUpdate { get; set; } = new();
+    private TodoForUpdateDto TodoForUpdate { get; } = new();
 
     [Inject]
     protected TodosService TodosService { get; set; }
