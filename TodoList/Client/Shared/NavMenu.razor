@@ -25,12 +25,12 @@
                 </NavLink>
             </li>
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href="newList">
+                <NavLink class="nav-link" href="/lists/new">
                     <span class="oi oi-plus" aria-hidden="true"></span> New list
                 </NavLink>
             </li>
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href="all">
+                <NavLink class="nav-link" href="/lists" Match="NavLinkMatch.All">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> All
                 </NavLink>
             </li>
@@ -45,7 +45,7 @@
                 {
                     @foreach (var list in AppState.ListsOfTodos)
                     {
-                        var href = "list/" + list.Id;
+                        var href = "lists/" + list.Id;
                         <li class="nav-item px-3">
                             <NavLink class="nav-link" href=@href>
                                 <span class="oi oi-list-rich" aria-hidden="true"></span> @list.Title

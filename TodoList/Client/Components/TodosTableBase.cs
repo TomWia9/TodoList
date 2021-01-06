@@ -30,7 +30,7 @@ namespace TodoList.Client.Components
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected string ListTitle { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
-        protected bool LoadFailed { get; set; }
+        protected bool ListLoadFailed { get; set; }
         protected bool UpdateFailed { get; set; }
         protected bool DeleteFailed { get; set; }
         protected string PercentOfDoneTodos { get; set; }
@@ -40,14 +40,18 @@ namespace TodoList.Client.Components
         protected override async Task OnParametersSetAsync()
         {
             await GetListOfTodos();
-            ListTitle = ListOfTodos.Title;
-            await GetNumberOfIncompletedTodos();
-            GetPercentOfDoneTodos();
+
+            if (!ListLoadFailed)
+            {
+                ListTitle = ListOfTodos.Title;
+                await GetNumberOfIncompletedTodos();
+                GetPercentOfDoneTodos();
+            }
         }
 
         protected void NavigateToNewListComponent()
         {
-            NavigationManager.NavigateTo("newList");
+            NavigationManager.NavigateTo("lists/new");
         }
 
         protected async Task UpdateStatus(TodoDto todo)
@@ -84,11 +88,11 @@ namespace TodoList.Client.Components
             {
                 ListOfTodos = await TodoListsService.GetListOfTodosAsync(ListId);
 
-                LoadFailed = false;
+                ListLoadFailed = ListOfTodos == null;
             }
             catch
             {
-                LoadFailed = true;
+                ListLoadFailed = true;
             }
 
         }
