@@ -6,16 +6,19 @@
     <div class="card mb-4">
         <div class="card-header" style="background: #052767;">
             <div class="d-flex justify-content-between text-white">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column w-100">
                     <h4 class="mb-2">
                         @ListOfTodos.Title
                     </h4>
-                    <small>(@NumberOfIncompletedTodos of @ListOfTodos.Todos.Count() todos not completed)</small>
-                    <div class="progress">
-                        <div class="progress-bar @ProgressBarCssClass w-100" role="progressbar" style="width: @PercentOfDoneTodos;" aria-valuenow="@PercentOfDoneTodos" aria-valuemin="0" aria-valuemax="100">@PercentOfDoneTodos</div>
+                    <div class="w-50 d-flex flex-column my-2 ">
+                        <small>(@NumberOfIncompletedTodos of @ListOfTodos.Todos.Count() todos not completed)</small>
+                        <div class="progress">
+                            <div class="progress-bar @ProgressBarCssClass" role="progressbar" style="width: @PercentOfDoneTodos;" aria-valuenow="@PercentOfDoneTodos" aria-valuemin="0" aria-valuemax="100">@PercentOfDoneTodos</div>
+                        </div>
                     </div>
+
                 </div>
-                <div class="d-flex flex-column justify-content-between ml-2">
+                <div class="btn-group d-flex flex-column  ml-2">
                     <button class="btn btn-danger mb-2" @onclick="() => DeleteListModal.Open()">Remove list</button>
                     <button class="btn btn-primary mt-2" @onclick="() => EditListTitleModal.Open()">Edit list name</button>
                 </div>
