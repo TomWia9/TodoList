@@ -23,5 +23,14 @@ namespace TodoList.Shared.Dto
         [MaxLength(20)]
         [MinLength(5)]
         public string Password { get; set; }
+
+        /// <summary>
+        /// The confirmation of user password
+        /// </summary>
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(20)]
+        [MinLength(5)]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
     }
 }
