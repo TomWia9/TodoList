@@ -23,5 +23,9 @@ namespace TodoList.Shared.Dto
         /// The list of todos belonging to this todo list
         /// </summary>
         public IEnumerable<TodoDto> Todos { get; set; }
+        /// <summary>
+        /// The id of user which this todo list belongs
+        /// </summary>
+        public int UserId { get; set; }
     }
 }

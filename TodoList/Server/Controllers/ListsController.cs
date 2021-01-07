@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
 using TodoList.Shared.Dto;
@@ -13,8 +14,8 @@ using TodoList.Shared.Dto;
 namespace TodoList.Server.Controllers
 {
     [Produces("application/json", "application/xml")]
-    //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    //[Authorize]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ListsController : ControllerBase
@@ -41,6 +42,7 @@ namespace TodoList.Server.Controllers
         /// <response code="201">Creates and returns the created todo list</response>
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [HttpPost]
         public async Task<ActionResult<ListOfTodosDto>> NewListOfTodos(ListOfTodosForCreationDto listOfTodos)
         {

@@ -32,7 +32,7 @@ namespace TodoList.Shared.Dto
         /// </summary>
         public DateTime DateAdded { get; set; }
         /// <summary>
-        /// The id of todo list whichthis todo belongs
+        /// The id of todo list which this todo belongs
         /// </summary>
         public int ListOfTodosId { get; set; }
 

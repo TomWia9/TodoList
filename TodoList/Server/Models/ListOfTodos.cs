@@ -14,5 +14,7 @@ namespace TodoList.Server.Models
 
         public string Title { get; set; }
         public IEnumerable<Todo> Todos { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }
