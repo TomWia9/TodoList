@@ -12,6 +12,9 @@ using TodoList.Shared.Dto;
 
 namespace TodoList.Server.Controllers
 {
+    [Produces("application/json", "application/xml")]
+    //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ListsController : ControllerBase
@@ -30,6 +33,14 @@ namespace TodoList.Server.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Create a new todo list
+        /// </summary>
+        /// <param name="listOfTodos">The todo list to create</param>
+        /// <returns>An ActionResult of type ListOfTodosDto</returns>
+        /// <response code="201">Creates and returns the created todo list</response>
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost]
         public async Task<ActionResult<ListOfTodosDto>> NewListOfTodos(ListOfTodosForCreationDto listOfTodos)
         {
@@ -55,7 +66,15 @@ namespace TodoList.Server.Controllers
 
             return BadRequest();
         }
-        
+
+        /// <summary>
+        /// Get todo list by id
+        /// </summary>
+        /// <param name="listOfTodosId">The Id of todo list you want to get</param>
+        /// <returns>An ActionResult of type ListOfTodosDto</returns>
+        /// <response code="200">Returns the requested todo list</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{listOfTodosId}")]
         public async Task<ActionResult<ListOfTodosDto>> GetTodoList(int listOfTodosId)
         {
@@ -75,6 +94,13 @@ namespace TodoList.Server.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Get a list of todo lists
+        /// </summary>
+        /// <returns>An ActionResult of type IEnumerable</returns>
+        /// <response code="200">Returns the list of todo lists</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ListOfTodosDto>>> GetTodoLists()
         {
@@ -94,6 +120,14 @@ namespace TodoList.Server.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Get a number of incompleted todos from specified todo list
+        /// </summary>
+        /// <param name="listOfTodosId">The Id of todo list you want to get number of incompleted todos from</param>
+        /// <returns>An ActionResult of type int</returns>
+        /// <response code="200">Returns number of incompleted todos from specified todo list</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{listOfTodosId}/NumberOfIncompletedTodos")]
         public async Task<ActionResult<int>> GetNumberOfIncompletedTodos(int listOfTodosId)
         {
@@ -114,6 +148,13 @@ namespace TodoList.Server.Controllers
 
         }
 
+        /// <summary>
+        /// Get a number of incompleted todos from all todo lists
+        /// </summary>
+        /// <returns>An ActionResult of type int</returns>
+        /// <response code="200">Returns number of incompleted todos from all todo lists</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("NumberOfAllIncompletedTodos")]
         public async Task<ActionResult<int>> GetNumberOfAllIncompletedTodos()
         {
@@ -129,6 +170,14 @@ namespace TodoList.Server.Controllers
 
         }
 
+        /// <summary>
+        /// Update todo list
+        /// </summary>
+        /// <param name="listOfTodosId">The Id of todo list you want to update</param>
+        /// <param name="listOfTodos">The todo list with updated values</param>
+        /// <returns>An IActionResult</returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{listOfTodosId}")]
         public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listOfTodos)
         {
@@ -164,6 +213,13 @@ namespace TodoList.Server.Controllers
 
         }
 
+        /// <summary>
+        /// Delete the todo list with given id
+        /// </summary>
+        /// <param name="listOfTodosId">The Id of todo list you want to delete</param>
+        /// <returns>An IActionResult</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{listOfTodosId}")]
         public async Task<IActionResult> DeleteListOfTodos(int listOfTodosId)
         {

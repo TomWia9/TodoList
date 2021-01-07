@@ -6,14 +6,34 @@ using System.Threading.Tasks;
 
 namespace TodoList.Shared.Dto
 {
+    /// <summary>
+    /// Todo with Id, Title, Description, IsDone, DateAdded and ListOfTodosId fields
+    /// </summary>
     public class TodoDto
     {
+        /// <summary>
+        /// The id of todo
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// The title of todo
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// The description of todo
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Todo is done status
+        /// </summary>
         public bool IsDone { get; set; }
+        /// <summary>
+        /// The date of todo creation
+        /// </summary>
         public DateTime DateAdded { get; set; }
-
+        /// <summary>
+        /// The id of todo list whichthis todo belongs
+        /// </summary>
         public int ListOfTodosId { get; set; }
 
     }

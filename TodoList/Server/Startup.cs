@@ -10,7 +10,9 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using Serilog;
 using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Server.Models;
@@ -37,7 +39,9 @@ namespace TodoList.Server
                  {
                      setupAction.SerializerSettings.ContractResolver =
                         new CamelCasePropertyNamesContractResolver();
-                 });
+                 })
+                 .AddXmlDataContractSerializerFormatters();
+                 
             services.AddRazorPages();
             services.AddMvc(options =>
             {
@@ -71,7 +75,7 @@ namespace TodoList.Server
                     {
                         Title = "HotelManagement API",
                         Version = "1",
-                        //Description = "",
+                        Description = "Through this API you can access todos lists and todos",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
                             Email = "tomaszwiatrowski9@gmail.com",
@@ -84,6 +88,20 @@ namespace TodoList.Server
                             Url = new Uri("https://opensource.org/licenses/MIT")
                         }
                     });
+
+                //Collect all referenced projects output XML document file paths  
+                var currentAssembly = Assembly.GetExecutingAssembly();
+                var xmlDocs = currentAssembly.GetReferencedAssemblies()
+                    .Union(new[] { currentAssembly.GetName() })
+                    .Select(a => Path.Combine(Path.GetDirectoryName(currentAssembly.Location), $"{a.Name}.xml"))
+                    .Where(File.Exists).ToList();
+
+                foreach (var d in xmlDocs)
+                {
+                    setupAction.IncludeXmlComments(d);
+                }
+                
+             
             });
 
         }

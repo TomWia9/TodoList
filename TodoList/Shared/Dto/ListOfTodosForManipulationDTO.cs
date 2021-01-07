@@ -9,6 +9,9 @@ namespace TodoList.Shared.Dto
 {
     public abstract class  ListOfTodosForManipulationDto
     {
+        /// <summary>
+        /// The title of todo list
+        /// </summary>
         [Required(AllowEmptyStrings = false)]
         [MaxLength(100)]
         public string Title { get; set; }
