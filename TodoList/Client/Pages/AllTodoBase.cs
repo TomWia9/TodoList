@@ -14,7 +14,7 @@ namespace TodoList.Client.Pages
     public class AllTodoBase : ComponentBase
     {
         [Inject]
-        protected  TodoListsService TodoListsService {get; set; }
+        protected  ITodoListsService TodoListsService {get; set; }
         [Inject]
         protected AppStateContainer AppState { get; set; }
         public IEnumerable<int> TodoListsIds { get; set; } = new List<int>();

@@ -81,7 +81,7 @@
     private TodoForUpdateDto TodoForUpdate { get; } = new();
 
     [Inject]
-    protected TodosService TodosService { get; set; }
+    protected ITodosService TodosService { get; set; }
 
     [Inject]
     protected NavigationManager NavigationManager { get; set; }

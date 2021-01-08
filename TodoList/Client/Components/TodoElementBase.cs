@@ -21,7 +21,7 @@ namespace TodoList.Client.Components
         public EventCallback OnDetailsClick { get; set; }
 
         [Inject]
-        protected TodosService TodosService { get; set; }
+        protected ITodosService TodosService { get; set; }
         
         protected bool UpdateFailed { get; set; }
         protected bool DeleteFailed { get; set; }

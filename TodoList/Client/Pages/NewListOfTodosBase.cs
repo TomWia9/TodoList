@@ -20,7 +20,7 @@ namespace TodoList.Client.Pages
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
         [Inject]
-        protected TodoListsService TodoListsService { get; set; }
+        protected ITodoListsService TodoListsService { get; set; }
         [Inject]
         protected AppStateContainer AppState { get; set; }
         

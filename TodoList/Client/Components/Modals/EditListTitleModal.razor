@@ -67,7 +67,7 @@
     protected AppStateContainer AppState { get; set; }
 
     [Inject]
-    protected TodoListsService TodoListsService { get; set; }
+    protected ITodoListsService TodoListsService { get; set; }
 
     [Parameter]
     public EventCallback OnTodoListUpdated { get; set; }

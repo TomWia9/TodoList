@@ -42,7 +42,7 @@
     public string ListTitle { get; set; }
 
     [Inject]
-    protected TodoListsService TodoListsService { get; set; }
+    protected ITodoListsService TodoListsService { get; set; }
 
     [Inject]
     protected AppStateContainer AppState { get; set; }

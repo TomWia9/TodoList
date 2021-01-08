@@ -15,7 +15,7 @@ namespace TodoList.Client.Components
     public class NewTodoBase : ComponentBase
     {
         [Inject]
-        protected TodosService TodosService { get; set; }
+        protected ITodosService TodosService { get; set; }
 
         [Parameter]
         public int ListId { get; set; }

@@ -11,7 +11,7 @@ using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Services
 {
-    public class TodoListsService
+    public class TodoListsService : ITodoListsService
     {
         private readonly IHttpService _httpService;
 
@@ -45,12 +45,6 @@ namespace TodoList.Client.Services
             return await response.Content.ReadFromJsonAsync<int>();
 
         }
-
-        //probably unnecessary
-        //public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
-        //{
-        //    return await _http.GetFromJsonAsync<IEnumerable<int>>($"api/lists/ids");
-        //}
 
         public async Task<HttpResponseMessage> UpdateList(int listId, ListOfTodosForUpdateDto listOfTodos)
         {

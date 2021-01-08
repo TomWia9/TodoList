@@ -12,7 +12,7 @@ using TodoList.Shared.Auth;
 
 namespace TodoList.Client.Services
 {
-    public class TodosService
+    public class TodosService : ITodosService
     {
 
         private readonly IHttpService _httpService;
@@ -26,11 +26,7 @@ namespace TodoList.Client.Services
         {
             var patchDocument = new JsonPatchDocument<TodoForUpdateDto>().Replace(o => o.IsDone, !todo.IsDone);
 
-            //not sure that will work because patchDocument and extension PatchAsync
             return await _httpService.Patch($"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}", patchDocument);
-            
-            //return await _http.PatchAsync($"api/lists/{todo.ListOfTodosId}/Todos/{todo.Id}",
-            //    patchDocument);
         }
 
         public async Task<HttpResponseMessage> CreateTodo(int listId, TodoForCreationDto todo)

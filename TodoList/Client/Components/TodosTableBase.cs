@@ -23,7 +23,7 @@ namespace TodoList.Client.Components
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        protected TodoListsService TodoListsService { get; set; }
+        protected ITodoListsService TodoListsService { get; set; }
 
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
