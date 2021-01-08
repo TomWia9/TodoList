@@ -37,7 +37,6 @@ namespace TodoList.Client.Pages
 
             ListOfTodos.UserId = user.Id;
 
-
             var response = await TodoListsService.CreateList(ListOfTodos);
 
             if (response.StatusCode == HttpStatusCode.Conflict)

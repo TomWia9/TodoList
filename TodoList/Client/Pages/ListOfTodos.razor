@@ -1,4 +1,6 @@
 ﻿@page "/lists/{Id:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <TodosTable ListId="Id"></TodosTable>
 

@@ -1,5 +1,8 @@
 ﻿@page "/lists"
+@attribute [Authorize]
 @inherits AllTodoBase
+@using Microsoft.AspNetCore.Authorization
+
 
 @if (TodoListsIds.Any())
 {

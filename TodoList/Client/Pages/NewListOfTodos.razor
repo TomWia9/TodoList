@@ -1,5 +1,7 @@
 ﻿@page "/lists/new"
+@using Microsoft.AspNetCore.Authorization
 @inherits NewListOfTodosBase
+@attribute [Authorize]
 
 <h2>Creating new List of todos</h2>
 
