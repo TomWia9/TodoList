@@ -1,0 +1,71 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using TodoList.Client.Helpers.ExtensionMethods
+@using TodoList.Client.Services
+@using TodoList.Shared.Auth
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
+<div class="col-md-6 offset-md-3 mt-5">
+    <div class="card">
+        <h4 class="card-header">Blazor WebAssembly JWT Login Example</h4>
+        <div class="card-body">
+            <EditForm Model="@_authenticateRequest" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label>Username</label>
+                    <InputText @bind-Value="_authenticateRequest.Username" class="form-control" />
+                    <ValidationMessage For="@(() => _authenticateRequest.Username)" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <InputText @bind-Value="_authenticateRequest.Password" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => _authenticateRequest.Password)" />
+                </div>
+                <button class="btn btn-primary">
+                    @if (_loading)
+                    {
+                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                    }
+                    Login
+                </button>
+                @if (!string.IsNullOrEmpty(_error))
+                {
+                    <div class="alert alert-danger mt-3 mb-0">@_error</div>
+                }
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private readonly AuthenticateRequest _authenticateRequest = new();
+    private bool _loading;
+    private string _error;
+
+    protected override void OnInitialized()
+    {
+        // redirect to home if already logged in
+        if (AuthenticationService.User != null)
+        {
+            NavigationManager.NavigateTo("");
+        }
+    }
+
+    private async void HandleValidSubmit()
+    {
+        _loading = true;
+        try
+        {
+            await AuthenticationService.Login(_authenticateRequest.Username, _authenticateRequest.Password);
+            var returnUrl = NavigationManager.QueryString("returnUrl") ?? "/";
+            NavigationManager.NavigateTo(returnUrl);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+            _loading = false;
+            StateHasChanged();
+        }
+    }
+}

@@ -21,12 +21,22 @@ namespace TodoList.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddSingleton<AppStateContainer>();
 
             builder.Services.AddScoped<TodoListsService>();
             builder.Services.AddScoped<TodosService>();
-            builder.Services.AddSingleton<AppStateContainer>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IUsersService, UsersService>();
+            builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+            builder.Services.AddScoped<IHttpService, HttpService>();
 
-            await builder.Build().RunAsync();
+
+            var host = builder.Build();
+
+            var authenticationService = host.Services.GetRequiredService<IAuthenticationService>();
+            await authenticationService.Initialize();
+
+            await host.RunAsync();
         }
     }
 }

@@ -2,60 +2,69 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using TodoList.Client.Helpers.ExtensionMethods;
+using TodoList.Shared.Auth;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Services
 {
     public class TodoListsService
     {
-        private readonly HttpClient _http;
+        private readonly IHttpService _httpService;
 
-        public TodoListsService(HttpClient http)
+        public TodoListsService(IHttpService httpService)
         {
-            _http = http;
+            _httpService = httpService;
         }
 
         public async Task<IEnumerable<ListOfTodosDto>> GetAllListsOfTodosAsync()
         {
-            return await _http.GetFromJsonAsync<IEnumerable<ListOfTodosDto>>("api/lists");
+            var response = await _httpService.Get("api/lists");
+            return await response.Content.ReadFromJsonAsync<IEnumerable<ListOfTodosDto>>();
         }
 
         public async Task<ListOfTodosDto> GetListOfTodosAsync(int listId)
         {
-            return await _http.GetFromJsonAsync<ListOfTodosDto>($"api/lists/{listId}");
+            var response = await _httpService.Get($"api/lists/{listId}");
+            return await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
+
         }
 
         public async Task<int> GetNumberOfIncompletedTodosAsync(int listId)
         {
-            return await _http.GetFromJsonAsync<int>($"api/lists/{listId}/NumberOfIncompletedTodos");
+            var response = await _httpService.Get($"api/lists/{listId}/NumberOfIncompletedTodos");
+            return await response.Content.ReadFromJsonAsync<int>();
         }
 
         public async Task<int> GetNumberOfAllIncompletedTodosAsync()
         {
-            return await _http.GetFromJsonAsync<int>($"api/lists/NumberOfAllIncompletedTodos");
+            var response = await _httpService.Get($"api/lists/NumberOfAllIncompletedTodos");
+            return await response.Content.ReadFromJsonAsync<int>();
+
         }
 
         //probably unnecessary
-        public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
-        {
-            return await _http.GetFromJsonAsync<IEnumerable<int>>($"api/lists/ids");
-        }
+        //public async Task<IEnumerable<int>> GetTodoListsIdsAsync()
+        //{
+        //    return await _http.GetFromJsonAsync<IEnumerable<int>>($"api/lists/ids");
+        //}
 
         public async Task<HttpResponseMessage> UpdateList(int listId, ListOfTodosForUpdateDto listOfTodos)
         {
-            return await _http.PutAsJsonAsync($"api/lists/{listId}", listOfTodos);
+            return await _httpService.Put($"api/lists/{listId}", listOfTodos);
         }
 
         public async Task<HttpResponseMessage> CreateList(ListOfTodosForCreationDto listOfTodos)
         {
-            return await _http.PostAsJsonAsync("api/lists", listOfTodos);
+            return await _httpService.Post("api/lists", listOfTodos);
         }
 
         public async Task<HttpResponseMessage> DeleteList(int listId)
         {
-            return await _http.DeleteAsync($"api/lists/{listId}");
+            return await _httpService.Delete($"api/lists/{listId}");
         }
 
     }

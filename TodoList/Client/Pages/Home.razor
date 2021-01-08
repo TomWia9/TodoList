@@ -1,0 +1,38 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+@using TodoList.Client.Services
+@using TodoList.Shared.Dto
+@attribute [Authorize]
+@inject IUsersService UsersService
+@inject IAuthenticationService AuthenticationService
+
+<div class="card mt-4">
+    <h4 class="card-header">You're logged in with Blazor WebAssembly & JWT!!</h4>
+    <div class="card-body">
+        <h6>Logged user</h6>
+        @if (_loading)
+        {
+            <div class="spinner-border spinner-border-sm"></div>
+        }
+        @if (_user != null)
+        {
+            <ul>
+                <li>@_user.Id @_user.Username</li>
+            </ul>
+        }
+    </div>
+</div>
+
+@code {
+    private bool _loading;
+    private UserDto _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        Console.WriteLine("before dupa");
+        _user = await UsersService.GetUser(AuthenticationService.User.Id);
+        Console.WriteLine("dupa");
+        _loading = false;
+    }
+}

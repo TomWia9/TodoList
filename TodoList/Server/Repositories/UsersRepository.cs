@@ -36,10 +36,13 @@ namespace TodoList.Server.Repositories
 
             var user = _mapper.Map<UserDto>(userFromDb);
 
-            // authentication successful so generate jwt token
-            var token = Token.GenerateToken(user, _appSettings.Secret);
-            
-            return new AuthenticateResponse(user, token);
+            // authentication successful so generate AuthenticateResponse with jwt token
+            return new AuthenticateResponse()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Token = Token.GenerateToken(user, _appSettings.Secret)
+            };
         }
 
         public async Task<bool> IsUsernameTaken(string userName)
