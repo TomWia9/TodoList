@@ -7,24 +7,25 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using TodoList.Shared.Auth;
+using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Services
 {
     public class AuthenticationService :IAuthenticationService
     {
         private readonly NavigationManager _navigationManager;
-        private readonly HttpClient _http;
+        private readonly IHttpService _httpService;
         private readonly ILocalStorageService _localStorageService;
 
         public AuthenticateResponse User { get; private set; }
 
         public AuthenticationService(
             NavigationManager navigationManager,
-            ILocalStorageService localStorageService, HttpClient http)
+            ILocalStorageService localStorageService, IHttpService httpService)
         {
             _navigationManager = navigationManager;
             _localStorageService = localStorageService;
-            _http = http;
+            _httpService = httpService;
         }
 
         public async Task Initialize()
@@ -40,7 +41,7 @@ namespace TodoList.Client.Services
                 Password = password
             };
             
-            var response = await _http.PostAsJsonAsync("api/users/authenticate", authenticateRequest);
+            var response = await _httpService.Post("api/users/authenticate", authenticateRequest);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -67,6 +68,11 @@ namespace TodoList.Client.Services
             User = null;
             await _localStorageService.RemoveItem("user");
             _navigationManager.NavigateTo("login");
+        }
+
+        public async Task<HttpResponseMessage> Register(UserForCreationDto user)
+        {
+            return await _httpService.Post($"api/users", user);
         }
     }
 }

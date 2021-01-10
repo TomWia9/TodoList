@@ -17,10 +17,10 @@ namespace TodoList.Client.Components
         [Inject]
         protected IAuthenticationService AuthenticationService { get; set; }
         
-        protected readonly AuthenticateRequest AuthenticateRequest = new();
+        protected AuthenticateRequest AuthenticateRequest = new();
         protected bool Loading;
         protected string Error;
-        protected async void HandleValidSubmit()
+        protected async Task HandleValidSubmit()
         {
             Loading = true;
             try
