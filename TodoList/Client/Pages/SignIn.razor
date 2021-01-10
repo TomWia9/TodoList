@@ -1,0 +1,31 @@
+﻿@page "/login"
+@using TodoList.Client.Services
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
+<div class="container text-center">
+
+    <h2 class="mb-4">Welcome to Todo list application!</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-2">
+            <Login></Login>
+        </div>
+        <div class="col-md-6">
+            @*<Register></Register>*@
+        </div>
+    </div>
+</div>
+
+
+@code {
+  
+    protected override void OnInitialized()
+    {
+        // redirect to home if already logged in
+        if (AuthenticationService.User != null)
+        {
+            NavigationManager.NavigateTo("");
+        }
+    }
+}
