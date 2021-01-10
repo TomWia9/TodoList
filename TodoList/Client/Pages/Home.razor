@@ -30,9 +30,7 @@
     protected override async Task OnInitializedAsync()
     {
         _loading = true;
-        Console.WriteLine("before dupa");
         _user = await UsersService.GetUser(AuthenticationService.User.Id);
-        Console.WriteLine("dupa");
         _loading = false;
     }
 }

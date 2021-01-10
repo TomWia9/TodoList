@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
 using TodoList.Shared.Dto;
@@ -82,7 +85,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId, userId);
                 if (todoList != null)
                 {
                     return Ok(_mapper.Map<ListOfTodosDto>(todoList));
@@ -108,7 +113,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                var todoLists = await _todoListsRepository.GetTodoListsAsync();
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                var todoLists = await _todoListsRepository.GetTodoListsAsync(userId);
                 if (todoLists != null)
                 {
                     return Ok(_mapper.Map<IEnumerable<ListOfTodosDto>>(todoLists));
@@ -190,7 +197,8 @@ namespace TodoList.Server.Controllers
                     return Conflict();
                 }
 
-                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+                var userId = int.Parse(User.FindFirst("id").Value);
+                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId, userId);
 
                 if (listOfTodosFromRepo == null)
                 {
@@ -227,7 +235,10 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(listOfTodosId, userId);
 
                 if(listOfTodosToRemove == null)
                 {
