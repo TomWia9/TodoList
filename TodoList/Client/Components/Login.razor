@@ -1,34 +1,41 @@
 ﻿@inherits LoginBase
 
-<div class="card" style="height: 450px">
-            <h4 class="card-header text-white" style="background: #052767;">Sign in to the Todo list application</h4>
-            <div class="card-body">
-                <EditForm Model="@AuthenticateRequest" OnValidSubmit="HandleValidSubmit">
-                    <DataAnnotationsValidator />
-                    <div class="form-group">
-                        <label>Username</label>
-                        <InputText @bind-Value="AuthenticateRequest.Username" class="form-control" />
-                        <ValidationMessage For="@(() => AuthenticateRequest.Username)" />
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <InputText @bind-Value="AuthenticateRequest.Password" type="password" class="form-control" />
-                        <ValidationMessage For="@(() => AuthenticateRequest.Password)" />
-                    </div>
-                    <button class="btn btn-primary">
-                        @if (Loading)
-                        {
-                            <span class="spinner-border spinner-border-sm mr-1"></span>
-                        }
-                        Login
-                    </button>
-                    @if (!string.IsNullOrEmpty(Error))
-                    {
-                        <div class="alert alert-danger mt-3 mb-0">@Error</div>
-                    }
-                </EditForm>
-            </div>
+<EditForm Model="@AuthenticateRequest" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+<div class="card" style="height: 500px">
+    <h4 class="card-header text-white" style="background: #052767;">Sign in to the Todo list application</h4>
+
+    <div class="card-body">
+
+        <div class="form-group">
+            <label>Username</label>
+            <InputText @bind-Value="AuthenticateRequest.Username" class="form-control"/>
+            <ValidationMessage For="@(() => AuthenticateRequest.Username)"/>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <InputText @bind-Value="AuthenticateRequest.Password" type="password" class="form-control"/>
+            <ValidationMessage For="@(() => AuthenticateRequest.Password)"/>
+        </div>
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <div class="alert alert-danger mt-3 mb-0">@Error</div>
+        }
+
+    </div>
+    <div class="card-footer bg-dark text-white">
+        <button class="btn btn-primary">
+            @if (Loading)
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            Login
+        </button>
+    </div>
+
 </div>
+</EditForm>
+
 
 
 
