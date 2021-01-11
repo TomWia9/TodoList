@@ -28,13 +28,13 @@ namespace TodoList.Client.Components
         protected ListOfTodosDto ListOfTodos { get; set; }
         protected int NumberOfIncompletedTodos { get; set; } = 0;
         protected bool ListLoadFailed { get; set; }
-        protected string PercentOfDoneTodos { get; set; }
+        protected string PercentOfDoneTodos { get; set; } = "text-white";
         
         protected DeleteListModal DeleteListModal;
         protected EditListTitleModal EditListTitleModal;
         protected TodoDetailsModal TodoDetailsModal;
 
-        protected string ProgressBarCssClass => PercentOfDoneTodos.Equals("0%") ? "text-dark" : null;
+        protected string ProgressBarCssClass => PercentOfDoneTodos.Equals("0%") ? "text-dark" : "text-white";
 
         protected override async Task OnParametersSetAsync()
         {
