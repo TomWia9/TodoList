@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using TodoList.Client.Shared;
 using TodoList.Shared.Auth;
 using TodoList.Shared.Dto;
 
@@ -16,16 +17,18 @@ namespace TodoList.Client.Services
         private readonly NavigationManager _navigationManager;
         private readonly IHttpService _httpService;
         private readonly ILocalStorageService _localStorageService;
+        private readonly AppStateContainer _appState;
 
         public AuthenticateResponse User { get; private set; }
 
         public AuthenticationService(
             NavigationManager navigationManager,
-            ILocalStorageService localStorageService, IHttpService httpService)
+            ILocalStorageService localStorageService, IHttpService httpService, AppStateContainer appState)
         {
             _navigationManager = navigationManager;
             _localStorageService = localStorageService;
             _httpService = httpService;
+            _appState = appState;
         }
 
         public async Task Initialize()
@@ -67,6 +70,7 @@ namespace TodoList.Client.Services
         {
             User = null;
             await _localStorageService.RemoveItem("user");
+            _appState.Clear();
             _navigationManager.NavigateTo("login");
         }
 

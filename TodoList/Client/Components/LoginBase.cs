@@ -26,8 +26,8 @@ namespace TodoList.Client.Components
             try
             {
                 await AuthenticationService.Login(AuthenticateRequest.Username, AuthenticateRequest.Password);
-                var returnUrl = NavigationManager.QueryString("returnUrl") ?? "/";
-                NavigationManager.NavigateTo(returnUrl);
+                //var returnUrl = NavigationManager.QueryString("returnUrl") ?? "/";
+                NavigationManager.NavigateTo("");
             }
             catch (Exception ex)
             {

@@ -50,6 +50,12 @@ namespace TodoList.Client.Shared
             NotifyStateChanged();
         }
 
+        public void Clear()
+        {
+            ListsOfTodos = new List<ListOfTodosDto>();
+            NotifyStateChanged();
+        }
+
         private void NotifyStateChanged() => OnListsUpdate?.Invoke();
 
     }
