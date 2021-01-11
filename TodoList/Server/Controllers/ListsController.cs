@@ -51,7 +51,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (await _todoListsRepository.ListOfTodosExists(listOfTodos.Title))
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                if (await _todoListsRepository.ListOfTodosExists(userId, listOfTodos.Title))
                 {
                     return Conflict();
                 }
@@ -85,9 +87,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                var userId = int.Parse(User.FindFirst("id").Value);
+               // var userId = int.Parse(User.FindFirst("id").Value);
 
-                var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId, userId);
+                var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
                 if (todoList != null)
                 {
                     return Ok(_mapper.Map<ListOfTodosDto>(todoList));
@@ -169,7 +171,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                var numberOfAllIncompletedTodos = await _todoListsRepository.GetNumberOfAllIncompletedTodos();
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                var numberOfAllIncompletedTodos = await _todoListsRepository.GetNumberOfAllIncompletedTodos(userId);
                 return Ok(numberOfAllIncompletedTodos);
             }
             catch (Exception)
@@ -192,13 +196,14 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (await _todoListsRepository.ListOfTodosExists(listOfTodos.Title))
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                if (await _todoListsRepository.ListOfTodosExists(userId, listOfTodos.Title))
                 {
                     return Conflict();
                 }
 
-                var userId = int.Parse(User.FindFirst("id").Value);
-                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId, userId);
+                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
 
                 if (listOfTodosFromRepo == null)
                 {
@@ -236,9 +241,7 @@ namespace TodoList.Server.Controllers
             try
             {
 
-                var userId = int.Parse(User.FindFirst("id").Value);
-
-                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(listOfTodosId, userId);
+                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
 
                 if(listOfTodosToRemove == null)
                 {

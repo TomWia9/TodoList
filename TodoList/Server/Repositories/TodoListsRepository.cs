@@ -16,9 +16,9 @@ namespace TodoList.Server.Repositories
             _context = context;
         }
 
-        public async Task<ListOfTodos> GetTodoListAsync(int todoListId, int userId)
+        public async Task<ListOfTodos> GetTodoListAsync(int todoListId)
         {
-            var todoList = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId && l.UserId == userId);
+            var todoList = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
             if (todoList != null)
             {
                 todoList.Todos = todoList.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);
@@ -27,9 +27,9 @@ namespace TodoList.Server.Repositories
             return todoList;
         }
 
-        public async Task<bool> ListOfTodosExists(string title)
+        public async Task<bool> ListOfTodosExists(int userId, string title)
         {
-            return await _context.ListsOfTodos.AnyAsync(t => t.Title == title);
+            return await _context.ListsOfTodos.AnyAsync(l => l.UserId == userId && l.Title == title);
         }
 
         public async Task<bool> ListOfTodosExists(int id)
@@ -60,18 +60,11 @@ namespace TodoList.Server.Repositories
             return listOfTodos.Todos.Count(x => !x.IsDone);
         }
 
-        public async Task<int> GetNumberOfAllIncompletedTodos()
+        public async Task<int> GetNumberOfAllIncompletedTodos(int userId)
         {
-            var listsOfTodos = await _context.ListsOfTodos.Include(l => l.Todos).ToListAsync();
+            var listsOfTodos = await _context.ListsOfTodos.Include(l => l.Todos).Where(l => l.UserId == userId).ToListAsync();
 
-            var numberOfAllIncompletedTodos = 0;
-
-            foreach (var listOfTodo in listsOfTodos)
-            {
-                numberOfAllIncompletedTodos += listOfTodo.Todos.Count(t => !t.IsDone);
-            }
-
-            return numberOfAllIncompletedTodos;
+            return listsOfTodos.Sum(listOfTodo => listOfTodo.Todos.Count(t => !t.IsDone));
         }
     }
 }
