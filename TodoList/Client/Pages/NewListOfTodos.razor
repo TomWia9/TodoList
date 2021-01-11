@@ -3,25 +3,33 @@
 @inherits NewListOfTodosBase
 @attribute [Authorize]
 
-<h2>Creating new List of todos</h2>
+<div class="card text-center mt-4">
+    <h4 class="card-header text-white" style="background: #052767;">Create new List of todos</h4>
+    <div class="card-body text-center justify-content-center container">
+        
+        <EditForm Model="@ListOfTodos" OnValidSubmit="@CreateList">
+            <DataAnnotationsValidator />
+            <div class="form-group row">
+                <div class="col-sm-8 offset-sm-2 text-center">
+                    <label>Title</label>
+                    <InputText @bind-Value="ListOfTodos.Title" class="form-control"/>
+                    <ValidationMessage For="@(() => ListOfTodos.Title)"/>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Create</button>
+        </EditForm>
+        
+        @if (ListAlreadyExists)
+        {
+            <div class="alert alert-warning mt-3 mb-0">List with this title already exists</div>
 
-<EditForm Model="@ListOfTodos" OnValidSubmit="@CreateList">
-    <DataAnnotationsValidator />
-
-    <div class="form-group col-5">
-        <label>Title</label>
-        <InputText @bind-Value="ListOfTodos.Title" class="form-control" />
-        <ValidationMessage For="@(() => ListOfTodos.Title)" />
+        }
+        else if (CreationFailed)
+        {
+            <div class="alert alert-danger mt-3 mb-0">Something went wrong, try again later</div>
+        }
     </div>
-    <button class="btn btn-primary" type="submit">Add</button>
+</div>
 
-</EditForm>
 
-@if (ListAlreadyExists)
-{
-    <h2>List with this title already exists</h2>
-}
-else if (CreationFailed)
-{
-    <h2>Something went wrong, try again later</h2>
-}
+

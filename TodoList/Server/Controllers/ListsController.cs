@@ -87,8 +87,6 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-               // var userId = int.Parse(User.FindFirst("id").Value);
-
                 var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
                 if (todoList != null)
                 {

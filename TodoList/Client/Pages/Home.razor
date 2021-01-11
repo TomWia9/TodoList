@@ -1,36 +1,38 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Authorization
 @using TodoList.Client.Services
-@using TodoList.Shared.Dto
 @attribute [Authorize]
+@inject AppStateContainer AppState
+@inject ITodoListsService TodoListsService
 @inject IUsersService UsersService
 @inject IAuthenticationService AuthenticationService
 
-<div class="card mt-4">
-    <h4 class="card-header">Welcome!</h4>
-    <div class="card-body">
-        <h6>Logged in user</h6>
-        @if (_loading)
-        {
-            <div class="spinner-border spinner-border-sm"></div>
-        }
-        @if (_user != null)
-        {
-            <ul>
-                <li>@_user.Id @_user.Username</li>
-            </ul>
-        }
-    </div>
+<div class="card text-center mt-4">
+    @if (_loading)
+    {
+        <div class="spinner-border spinner-border-sm"></div>
+    }
+    else
+    {
+        <h4 class="card-header text-white" style="background: #052767;">Welcome @_userName!</h4>
+        <div class="card-body text-center">
+            <h4>You have @_numberOfAllIncompletedTodos undone todos</h4>
+        </div>
+    }
+
 </div>
 
 @code {
+
     private bool _loading;
-    private UserDto _user;
+    private string _userName;
+    private int _numberOfAllIncompletedTodos;
 
     protected override async Task OnInitializedAsync()
     {
         _loading = true;
-        _user = await UsersService.GetUser(AuthenticationService.User.Id);
+        _userName = AuthenticationService.User.Username;
+        _numberOfAllIncompletedTodos = await TodoListsService.GetNumberOfAllIncompletedTodosAsync();
         _loading = false;
     }
 }
