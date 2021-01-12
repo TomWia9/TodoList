@@ -56,9 +56,16 @@ namespace TodoList.Client.Components
         {
             try
             {
-                ListOfTodos = await TodoListsService.GetListOfTodosAsync(ListId);
+                var response = await TodoListsService.GetListOfTodosAsync(ListId);
 
-                ListLoadFailed = ListOfTodos == null;
+                if (response.IsSuccessStatusCode)
+                {
+                    ListOfTodos = await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
+                }
+                else
+                {
+                    ListLoadFailed = true;
+                }
             }
             catch
             {

@@ -52,7 +52,7 @@ namespace TodoList.Client.Pages
                 var listOfTodos = await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
                 if (listOfTodos != null)
                 {
-                    AppState.AddListOfTodos(await TodoListsService.GetListOfTodosAsync(listOfTodos.Id));
+                    AppState.AddListOfTodos(listOfTodos);
                     var url = $"lists/{listOfTodos.Id}";
                     NavigationManager.NavigateTo(url);
                 }

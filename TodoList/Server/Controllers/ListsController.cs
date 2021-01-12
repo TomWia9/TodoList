@@ -87,7 +87,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                var todoList = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                var todoList = await _todoListsRepository.GetTodoListAsync(userId, listOfTodosId);
                 if (todoList != null)
                 {
                     return Ok(_mapper.Map<ListOfTodosDto>(todoList));
@@ -201,7 +203,7 @@ namespace TodoList.Server.Controllers
                     return Conflict();
                 }
 
-                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+                var listOfTodosFromRepo = await _todoListsRepository.GetTodoListAsync(userId, listOfTodosId);
 
                 if (listOfTodosFromRepo == null)
                 {
@@ -238,8 +240,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
+                var userId = int.Parse(User.FindFirst("id").Value);
 
-                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(listOfTodosId);
+                var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(userId, listOfTodosId);
 
                 if(listOfTodosToRemove == null)
                 {

@@ -16,9 +16,9 @@ namespace TodoList.Server.Repositories
             _context = context;
         }
 
-        public async Task<ListOfTodos> GetTodoListAsync(int todoListId)
+        public async Task<ListOfTodos> GetTodoListAsync(int userId, int todoListId)
         {
-            var todoList = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.Id == todoListId);
+            var todoList = await _context.ListsOfTodos.Include(l => l.Todos).FirstOrDefaultAsync(l => l.UserId == userId && l.Id == todoListId);
             if (todoList != null)
             {
                 todoList.Todos = todoList.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);

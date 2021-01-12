@@ -26,10 +26,11 @@ namespace TodoList.Client.Services
             return await response.Content.ReadFromJsonAsync<IEnumerable<ListOfTodosDto>>();
         }
 
-        public async Task<ListOfTodosDto> GetListOfTodosAsync(int listId)
+        public async Task<HttpResponseMessage> GetListOfTodosAsync(int listId)
         {
-            var response = await _httpService.Get($"api/lists/{listId}");
-            return await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
+            return await _httpService.Get($"api/lists/{listId}");
+
+           //return await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
 
         }
 

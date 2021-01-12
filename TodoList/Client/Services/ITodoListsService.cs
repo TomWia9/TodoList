@@ -8,7 +8,7 @@ namespace TodoList.Client.Services
     public interface ITodoListsService
     {
         Task<IEnumerable<ListOfTodosDto>> GetAllListsOfTodosAsync();
-        Task<ListOfTodosDto> GetListOfTodosAsync(int listId);
+        Task<HttpResponseMessage> GetListOfTodosAsync(int listId);
         Task<int> GetNumberOfIncompletedTodosAsync(int listId);
         Task<int> GetNumberOfAllIncompletedTodosAsync();
         Task<HttpResponseMessage> UpdateList(int listId, ListOfTodosForUpdateDto listOfTodos);
