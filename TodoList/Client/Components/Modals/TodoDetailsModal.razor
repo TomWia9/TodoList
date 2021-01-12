@@ -78,10 +78,14 @@
 
     private int _listId;
     private int _todoId;
+    private DateTime _todoDateAdded;
     private TodoForUpdateDto TodoForUpdate { get; } = new();
 
     [Inject]
     protected ITodosService TodosService { get; set; }
+
+    [Inject]
+    protected AppStateContainer AppState { get; set; }
 
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
@@ -101,6 +105,7 @@
     {
         _listId = todo.ListOfTodosId;
         _todoId = todo.Id;
+        _todoDateAdded = todo.DateAdded;
 
         TodoForUpdate.Title = todo.Title;
         TodoForUpdate.Description = todo.Description;
@@ -130,6 +135,19 @@
         if (response.IsSuccessStatusCode)
         {
             _updateFailed = false;
+
+            //todo for AppState update
+            var todo = new TodoDto()
+            {
+                Id = _todoId,
+                ListOfTodosId = _listId,
+                Title = TodoForUpdate.Title,
+                Description = TodoForUpdate.Description,
+                IsDone = TodoForUpdate.IsDone,
+                DateAdded = _todoDateAdded
+            };
+
+            AppState.UpdateTodo(todo);
             await OnTodoUpdated.InvokeAsync();
             Close();
         }

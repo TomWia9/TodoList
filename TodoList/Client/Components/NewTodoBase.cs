@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using TodoList.Client.Services;
+using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Components
@@ -16,6 +17,9 @@ namespace TodoList.Client.Components
     {
         [Inject]
         protected ITodosService TodosService { get; set; }
+
+        [Inject]
+        protected AppStateContainer AppState { get; set; }
 
         [Parameter]
         public int ListId { get; set; }
@@ -49,6 +53,8 @@ namespace TodoList.Client.Components
             else
             { 
                 CreationFailed = false;
+                var todo = await response.Content.ReadFromJsonAsync<TodoDto>();
+                AppState.AddTodo(todo);
                await OnCreated.InvokeAsync();
             }
         }

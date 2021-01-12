@@ -132,58 +132,6 @@ namespace TodoList.Server.Controllers
         }
 
         /// <summary>
-        /// Get a number of incompleted todos from specified todo list
-        /// </summary>
-        /// <param name="listOfTodosId">The Id of todo list you want to get number of incompleted todos from</param>
-        /// <returns>An ActionResult of type int</returns>
-        /// <response code="200">Returns number of incompleted todos from specified todo list</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{listOfTodosId}/NumberOfIncompletedTodos")]
-        public async Task<ActionResult<int>> GetNumberOfIncompletedTodos(int listOfTodosId)
-        {
-            try
-            {
-                if (!await _todoListsRepository.ListOfTodosExists(listOfTodosId))
-                {
-                    return NotFound();
-                }
-
-                var numberOfIncompletedTodos = await _todoListsRepository.GetNumberOfIncompletedTodos(listOfTodosId);
-                return Ok(numberOfIncompletedTodos);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
-            }
-
-        }
-
-        /// <summary>
-        /// Get a number of incompleted todos from all todo lists
-        /// </summary>
-        /// <returns>An ActionResult of type int</returns>
-        /// <response code="200">Returns number of incompleted todos from all todo lists</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("NumberOfAllIncompletedTodos")]
-        public async Task<ActionResult<int>> GetNumberOfAllIncompletedTodos()
-        {
-            try
-            {
-                var userId = int.Parse(User.FindFirst("id").Value);
-
-                var numberOfAllIncompletedTodos = await _todoListsRepository.GetNumberOfAllIncompletedTodos(userId);
-                return Ok(numberOfAllIncompletedTodos);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
-            }
-
-        }
-
-        /// <summary>
         /// Update todo list
         /// </summary>
         /// <param name="listOfTodosId">The Id of todo list you want to update</param>

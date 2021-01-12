@@ -14,17 +14,20 @@ namespace TodoList.Client.Pages
     public class AllTodoBase : ComponentBase
     {
         [Inject]
-        protected  ITodoListsService TodoListsService {get; set; }
-        [Inject]
         protected AppStateContainer AppState { get; set; }
         public IEnumerable<int> TodoListsIds { get; set; } = new List<int>();
         protected int NumberOfAllIncompletedTodos { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             TodoListsIds = AppState.ListsOfTodos.Select(l => l.Id).ToList();
-            NumberOfAllIncompletedTodos = await TodoListsService.GetNumberOfAllIncompletedTodosAsync();
+            GetNumberOfAllIncompletedTodosAsync();
         }
 
+        protected void GetNumberOfAllIncompletedTodosAsync()
+        {
+                if (AppState.NumberOfAllIncompletedTodos != null)
+                    NumberOfAllIncompletedTodos = (int) AppState.NumberOfAllIncompletedTodos;
+        }
     }
 }

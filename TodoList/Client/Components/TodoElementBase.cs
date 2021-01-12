@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using TodoList.Client.Components.Modals;
 using TodoList.Client.Services;
+using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Components
@@ -22,7 +23,10 @@ namespace TodoList.Client.Components
 
         [Inject]
         protected ITodosService TodosService { get; set; }
-        
+
+        [Inject]
+        protected AppStateContainer AppState { get; set; }
+
         protected bool UpdateFailed { get; set; }
         protected bool DeleteFailed { get; set; }
 
@@ -31,8 +35,16 @@ namespace TodoList.Client.Components
             try
             {
                 var response = await TodosService.UpdateStatus(Todo);
-                UpdateFailed = !response.IsSuccessStatusCode;
-                await OnUpdated.InvokeAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    AppState.UpdateTodo(Todo);
+                    await OnUpdated.InvokeAsync();
+                }
+                else
+                {
+                    UpdateFailed = true;
+
+                }
             }
             catch
             {
@@ -45,7 +57,16 @@ namespace TodoList.Client.Components
             try
             {
                 var response = await TodosService.DeleteTodo(Todo.ListOfTodosId, Todo.Id);
-                DeleteFailed = !response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    AppState.DeleteTodo(Todo);
+                    await OnUpdated.InvokeAsync();
+                }
+                else
+                {
+                    DeleteFailed = true;
+
+                }
                 await OnUpdated.InvokeAsync();
             }
             catch

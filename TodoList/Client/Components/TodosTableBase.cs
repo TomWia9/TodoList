@@ -42,7 +42,7 @@ namespace TodoList.Client.Components
 
             if (!ListLoadFailed)
             {
-                await GetNumberOfIncompletedTodos();
+                GetNumberOfIncompletedTodos();
                 GetPercentOfDoneTodos();
             }
         }
@@ -74,9 +74,9 @@ namespace TodoList.Client.Components
 
         }
 
-        private async Task GetNumberOfIncompletedTodos()
+        private void GetNumberOfIncompletedTodos()
         {
-            NumberOfIncompletedTodos = await TodoListsService.GetNumberOfIncompletedTodosAsync(ListId);
+            NumberOfIncompletedTodos = ListOfTodos.Todos.Count(x => !x.IsDone);
         }
 
         private void GetPercentOfDoneTodos()
@@ -96,7 +96,7 @@ namespace TodoList.Client.Components
         protected async Task ReloadListOfTodos()
         {
             await GetListOfTodos();
-            await GetNumberOfIncompletedTodos();
+            GetNumberOfIncompletedTodos();
             GetPercentOfDoneTodos();
             await OnUpdated.InvokeAsync();
         }

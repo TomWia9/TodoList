@@ -13,7 +13,7 @@
 
     @foreach (var todoListId in TodoListsIds)
     {
-        <TodosTable ListId="todoListId" OnUpdated="async () => await TodoListsService.GetNumberOfAllIncompletedTodosAsync()"></TodosTable>
+        <TodosTable ListId="todoListId" OnUpdated="GetNumberOfAllIncompletedTodosAsync"></TodosTable>
     }
 
 }

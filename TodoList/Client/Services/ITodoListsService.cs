@@ -9,8 +9,6 @@ namespace TodoList.Client.Services
     {
         Task<IEnumerable<ListOfTodosDto>> GetAllListsOfTodosAsync();
         Task<HttpResponseMessage> GetListOfTodosAsync(int listId);
-        Task<int> GetNumberOfIncompletedTodosAsync(int listId);
-        Task<int> GetNumberOfAllIncompletedTodosAsync();
         Task<HttpResponseMessage> UpdateList(int listId, ListOfTodosForUpdateDto listOfTodos);
         Task<HttpResponseMessage> CreateList(ListOfTodosForCreationDto listOfTodos);
         Task<HttpResponseMessage> DeleteList(int listId);

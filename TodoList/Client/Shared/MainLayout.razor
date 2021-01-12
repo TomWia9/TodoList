@@ -1,7 +1,6 @@
 ﻿@using TodoList.Client.Services
 @inherits LayoutComponentBase
 @inject IAuthenticationService AuthenticationService
-@inject NavigationManager NavigationManager
 
 <div class="page">
     @if (AuthenticationService.User != null)

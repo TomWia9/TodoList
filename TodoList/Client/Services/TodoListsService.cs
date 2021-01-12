@@ -29,22 +29,6 @@ namespace TodoList.Client.Services
         public async Task<HttpResponseMessage> GetListOfTodosAsync(int listId)
         {
             return await _httpService.Get($"api/lists/{listId}");
-
-           //return await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
-
-        }
-
-        public async Task<int> GetNumberOfIncompletedTodosAsync(int listId)
-        {
-            var response = await _httpService.Get($"api/lists/{listId}/NumberOfIncompletedTodos");
-            return await response.Content.ReadFromJsonAsync<int>();
-        }
-
-        public async Task<int> GetNumberOfAllIncompletedTodosAsync()
-        {
-            var response = await _httpService.Get($"api/lists/NumberOfAllIncompletedTodos");
-            return await response.Content.ReadFromJsonAsync<int>();
-
         }
 
         public async Task<HttpResponseMessage> UpdateList(int listId, ListOfTodosForUpdateDto listOfTodos)

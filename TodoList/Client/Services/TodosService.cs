@@ -8,6 +8,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using TodoList.Shared.Dto;
 using TodoList.Client.Helpers.ExtensionMethods;
+using TodoList.Client.Shared;
 using TodoList.Shared.Auth;
 
 namespace TodoList.Client.Services
@@ -16,10 +17,12 @@ namespace TodoList.Client.Services
     {
 
         private readonly IHttpService _httpService;
+        private readonly AppStateContainer _appState;
 
-        public TodosService(IHttpService httpService)
+        public TodosService(IHttpService httpService, AppStateContainer appState)
         {
             _httpService = httpService;
+            _appState = appState;
         }
 
         public async Task<HttpResponseMessage> UpdateStatus(TodoDto todo)

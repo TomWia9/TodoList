@@ -13,7 +13,5 @@ namespace TodoList.Server.Repositories
         Task<bool> ListOfTodosExists(int userId, string title);
         Task<bool> ListOfTodosExists(int id);
         void UpdateTodoList(ListOfTodos listOfTodos);
-        Task<int> GetNumberOfIncompletedTodos(int listOfTodosId);
-        Task<int> GetNumberOfAllIncompletedTodos(int userId);
     }
 }

@@ -3,9 +3,10 @@
 @using TodoList.Client.Services
 @attribute [Authorize]
 @inject AppStateContainer AppState
-@inject ITodoListsService TodoListsService
-@inject IUsersService UsersService
 @inject IAuthenticationService AuthenticationService
+@inject ITodoListsService TodoListsService
+@implements IDisposable
+
 
 <div class="card text-center mt-4">
     @if (_loading)
@@ -16,7 +17,14 @@
     {
         <h4 class="card-header text-white" style="background: #052767;">Welcome @_userName!</h4>
         <div class="card-body text-center">
-            <h4>You have @_numberOfAllIncompletedTodos undone todos</h4>
+            @if (AppState.NumberOfAllIncompletedTodos == null)
+            {
+                <div class="spinner-border spinner-border-sm"></div>
+            }
+            else
+            {
+                <h4>You have @AppState.NumberOfAllIncompletedTodos undone todos</h4>
+            }
         </div>
     }
 
@@ -26,13 +34,19 @@
 
     private bool _loading;
     private string _userName;
-    private int _numberOfAllIncompletedTodos;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _loading = true;
         _userName = AuthenticationService.User.Username;
-        _numberOfAllIncompletedTodos = await TodoListsService.GetNumberOfAllIncompletedTodosAsync();
         _loading = false;
+
+        AppState.OnListsUpdate += StateHasChanged;
+
+    }
+
+    public void Dispose()
+    {
+        AppState.OnListsUpdate -= StateHasChanged;
     }
 }
