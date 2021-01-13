@@ -32,9 +32,9 @@ namespace TodoList.Server.Repositories
             return await _context.ListsOfTodos.AnyAsync(l => l.UserId == userId && l.Title == title);
         }
 
-        public async Task<bool> ListOfTodosExists(int id)
+        public async Task<bool> ListOfTodosExists(int userId, int listId)
         {
-            return await _context.ListsOfTodos.AnyAsync(t => t.Id == id);
+            return await _context.ListsOfTodos.AnyAsync(l => l.UserId == userId && l.Id == listId);
         }
 
         public async Task<IEnumerable<ListOfTodos>> GetTodoListsAsync(int userId)

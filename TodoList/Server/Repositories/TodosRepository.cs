@@ -26,11 +26,6 @@ namespace TodoList.Server.Repositories
             return await _context.Todos.Where(t => t.ListOfTodosId == listOfTodosId).ToListAsync();
         }
 
-        public async Task<bool> ListOfTodosExists(int listOfTodosId)
-        {
-            return await _context.ListsOfTodos.AnyAsync(l => l.Id == listOfTodosId);
-        }
-
         public async Task<bool> TodoExists(int listOfTodosId, string title, int? todoId = null) 
         {
             return await _context.Todos.AnyAsync(t => t.Id != todoId && t.ListOfTodosId == listOfTodosId && t.Title == title);

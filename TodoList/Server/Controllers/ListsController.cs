@@ -52,7 +52,7 @@ namespace TodoList.Server.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirst("id").Value);
-
+                
                 if (await _todoListsRepository.ListOfTodosExists(userId, listOfTodos.Title))
                 {
                     return Conflict();
@@ -140,7 +140,7 @@ namespace TodoList.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{listOfTodosId}")]
-        public async Task<IActionResult> UpdateTodo(int listOfTodosId, ListOfTodosForUpdateDto listOfTodos)
+        public async Task<IActionResult> UpdateListOfTodo(int listOfTodosId, ListOfTodosForUpdateDto listOfTodos)
         {
             try
             {

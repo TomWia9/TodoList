@@ -11,7 +11,7 @@ namespace TodoList.Server.Repositories
         Task<IEnumerable<ListOfTodos>> GetTodoListsAsync(int userId);
         Task<ListOfTodos> GetTodoListAsync(int userId, int todoListId);
         Task<bool> ListOfTodosExists(int userId, string title);
-        Task<bool> ListOfTodosExists(int id);
+        Task<bool> ListOfTodosExists(int userId, int listId);
         void UpdateTodoList(ListOfTodos listOfTodos);
     }
 }

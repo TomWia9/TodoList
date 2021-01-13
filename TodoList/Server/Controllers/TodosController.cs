@@ -22,16 +22,18 @@ namespace TodoList.Server.Controllers
     public class TodosController : ControllerBase
     {
         private readonly ITodosRepository _todoRepository;
+        private readonly ITodoListsRepository _todoListsRepository;
         private readonly IDbRepository _dbRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TodosController> _logger;
 
-        public TodosController(ITodosRepository todoRepository, IDbRepository dbRepository, IMapper mapper, ILogger<TodosController> logger)
+        public TodosController(ITodosRepository todoRepository, ITodoListsRepository todoListsRepository, IDbRepository dbRepository, IMapper mapper, ILogger<TodosController> logger)
         {
             _todoRepository = todoRepository;
             _dbRepository = dbRepository;
             _mapper = mapper;
             _logger = logger;
+            _todoListsRepository = todoListsRepository;
         }
 
         /// <summary>
@@ -49,7 +51,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
@@ -92,7 +96,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
@@ -124,7 +130,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                var userId = int.Parse(User.FindFirst("id").Value);
+                
+                if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
@@ -158,8 +166,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
+                var userId = int.Parse(User.FindFirst("id").Value);
 
-                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
@@ -221,7 +230,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (!await _todoRepository.ListOfTodosExists(listOfTodosId))
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
@@ -271,7 +282,9 @@ namespace TodoList.Server.Controllers
         {
             try
             {
-                if (! await _todoRepository.ListOfTodosExists(listOfTodosId))
+                var userId = int.Parse(User.FindFirst("id").Value);
+
+                if (! await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
