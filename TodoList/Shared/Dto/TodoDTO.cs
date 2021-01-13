@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoList.Shared.Enums;
 
 namespace TodoList.Shared.Dto
 {
     /// <summary>
-    /// Todo with Id, Title, Description, IsDone, DateAdded and ListOfTodosId fields
+    /// Todo with Id, Title, Description, IsDone, DateAdded, Color and ListOfTodosId fields
     /// </summary>
     public class TodoDto
     {
@@ -31,6 +32,10 @@ namespace TodoList.Shared.Dto
         /// The date of todo creation
         /// </summary>
         public DateTime DateAdded { get; set; }
+        /// <summary>
+        /// Color of todo
+        /// </summary>
+        public TodoColor Color { get; set; }
         /// <summary>
         /// The id of todo list which this todo belongs
         /// </summary>

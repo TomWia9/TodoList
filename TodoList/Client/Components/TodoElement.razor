@@ -1,6 +1,6 @@
 ﻿@inherits TodoElementBase
 
-<div role="button" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-secondary mb-1" style="cursor: pointer" @onclick="@(async () => await OnDetailsClick.InvokeAsync())">
+<div role="button" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-secondary mb-1 @string.Concat("bg-", Todo.Color)" style="cursor: pointer" @onclick="@(async () => await OnDetailsClick.InvokeAsync())">
 
     <input class="mb-1" type="checkbox" @bind="Todo.IsDone" @onclick="@(async () => await UpdateStatus())" @onclick:stopPropagation="true"/>
     <div class="d-flex w-100 justify-content-between">
@@ -25,7 +25,9 @@
                 @Todo.Description
             </p>
         }
-
+        <p class="mb-1 text-break">
+            @Todo.Color
+        </p>
         <div class="d-flex flex-column">
             @if ((DateTime.Now - Todo.DateAdded).TotalMinutes <= 30 && !Todo.IsDone)
             {

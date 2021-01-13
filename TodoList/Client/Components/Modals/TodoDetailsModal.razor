@@ -1,6 +1,7 @@
 ﻿@using TodoList.Client.Services
 @using TodoList.Shared.Dto
 @using System.Net
+@using TodoList.Shared.Enums
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
@@ -31,23 +32,38 @@
                     }
                     else 
                     {
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label>Title</label>
                             <InputText @bind-Value="TodoForUpdate.Title" class="form-control"/>
                             <ValidationMessage For="@(() => TodoForUpdate.Title)"/>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label>Description</label>
                             <InputTextArea @bind-Value="TodoForUpdate.Description" class="form-control" rows="3" style="resize: none;"/>
                             <ValidationMessage For="@(() => TodoForUpdate.Description)"/>
                         </div>
 
-                        <div class="form-check">
+                        <div class="form-check mb-2">
                             <InputCheckbox @bind-Value="TodoForUpdate.IsDone" class="form-check-input" />
                             <label class="form-check-label">Done</label>
                             <ValidationMessage For="@(() => TodoForUpdate.IsDone)"/>
                         </div>
+
+                        <div class="form-check form-check-inline mb-2">
+                            <InputRadioGroup @bind-Value="TodoForUpdate.Color">
+                                Color:
+                                @foreach (var color in (TodoColor[])Enum
+                                    .GetValues(typeof(TodoColor)))
+                                {
+                                    <div class="@string.Concat("bg-", color) rounded-circle d-flex justify-content-center align-items-center mx-2 border border-dark" style="width: 35px; height: 35px">
+                                        <InputRadio Value="color"/> 
+                                    </div>
+                                   
+                                }
+                            </InputRadioGroup>
+                        </div>
+
                     }
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
@@ -106,6 +122,7 @@
         TodoForUpdate.Title = todo.Title;
         TodoForUpdate.Description = todo.Description;
         TodoForUpdate.IsDone = todo.IsDone;
+        TodoForUpdate.Color = todo.Color;
 
         ModalDisplay = "block;";
         ModalClass = "Show";
@@ -140,6 +157,7 @@
                 Title = TodoForUpdate.Title,
                 Description = TodoForUpdate.Description,
                 IsDone = TodoForUpdate.IsDone,
+                Color = TodoForUpdate.Color,
                 DateAdded = _loadedTodo.DateAdded
             };
 
