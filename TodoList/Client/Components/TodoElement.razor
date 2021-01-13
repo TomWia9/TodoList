@@ -25,9 +25,6 @@
                 @Todo.Description
             </p>
         }
-        <p class="mb-1 text-break">
-            @Todo.Color
-        </p>
         <div class="d-flex flex-column">
             @if ((DateTime.Now - Todo.DateAdded).TotalMinutes <= 30 && !Todo.IsDone)
             {

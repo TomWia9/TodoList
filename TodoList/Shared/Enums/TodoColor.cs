@@ -3,6 +3,7 @@
     public enum TodoColor
     {
         primary,
+        secondary,
         success,
         danger,
         warning,
