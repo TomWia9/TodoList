@@ -23,10 +23,10 @@ namespace TodoList.Client.Components
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        protected ITodoListsService TodoListsService { get; set; }
+        protected AppStateContainer AppState { get; set; }
 
         protected ListOfTodosDto ListOfTodos { get; set; }
-        protected int NumberOfIncompletedTodos { get; set; } = 0;
+        protected int NumberOfIncompletedTodos { get; set; }
         protected bool ListLoadFailed { get; set; }
         protected string PercentOfDoneTodos { get; set; } = "text-white";
         
@@ -36,15 +36,13 @@ namespace TodoList.Client.Components
 
         protected string ProgressBarCssClass => PercentOfDoneTodos.Equals("0%") ? "text-dark" : "text-white";
 
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
-            await GetListOfTodos();
+            GetListOfTodos();
 
-            if (!ListLoadFailed)
-            {
-                GetNumberOfIncompletedTodos();
-                GetPercentOfDoneTodos();
-            }
+            if (ListLoadFailed) return;
+            GetNumberOfIncompletedTodos();
+            GetPercentOfDoneTodos();
         }
 
         protected void NavigateToNewListComponent()
@@ -52,15 +50,15 @@ namespace TodoList.Client.Components
             NavigationManager.NavigateTo("lists/new");
         }
 
-        private async Task GetListOfTodos()
+        private void GetListOfTodos()
         {
             try
             {
-                var response = await TodoListsService.GetListOfTodosAsync(ListId);
+                var list = AppState.GetListOfTodos(ListId);
 
-                if (response.IsSuccessStatusCode)
+                if (list != null)
                 {
-                    ListOfTodos = await response.Content.ReadFromJsonAsync<ListOfTodosDto>();
+                    ListOfTodos = list;
                 }
                 else
                 {
@@ -95,7 +93,7 @@ namespace TodoList.Client.Components
 
         protected async Task ReloadListOfTodos()
         {
-            await GetListOfTodos();
+            GetListOfTodos();
             GetNumberOfIncompletedTodos();
             GetPercentOfDoneTodos();
             await OnUpdated.InvokeAsync();

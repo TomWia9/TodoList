@@ -13,6 +13,11 @@ namespace TodoList.Client.Shared
 
         public event Action OnListsUpdate;
 
+        public ListOfTodosDto GetListOfTodos(int listId)
+        {
+            return ListsOfTodos.FirstOrDefault(l => l.Id == listId);
+        }
+        
         public void AddListsOfTodos(IEnumerable<ListOfTodosDto> listsOfTodos)
         {
             ListsOfTodos = listsOfTodos;
