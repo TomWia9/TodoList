@@ -76,19 +76,17 @@
 
 @code {
 
-    private int _listId;
-    private int _todoId;
-    private DateTime _todoDateAdded;
     private TodoForUpdateDto TodoForUpdate { get; } = new();
+    private TodoDto _loadedTodo;
 
     [Inject]
-    protected ITodosService TodosService { get; set; }
+    private ITodosService TodosService { get; set; }
 
     [Inject]
-    protected AppStateContainer AppState { get; set; }
+    private AppStateContainer AppState { get; set; }
 
     [Inject]
-    protected NavigationManager NavigationManager { get; set; }
+    private NavigationManager NavigationManager { get; set; }
 
     [Parameter]
     public EventCallback OnTodoUpdated { get; set; }
@@ -103,9 +101,7 @@
 
     public void Open(TodoDto todo)
     {
-        _listId = todo.ListOfTodosId;
-        _todoId = todo.Id;
-        _todoDateAdded = todo.DateAdded;
+        _loadedTodo = todo;
 
         TodoForUpdate.Title = todo.Title;
         TodoForUpdate.Description = todo.Description;
@@ -130,7 +126,7 @@
 
     private async Task SaveChangesAsync()
     {
-        var response = await TodosService.UpdateTodo(_listId, _todoId, TodoForUpdate);
+        var response = await TodosService.UpdateTodo(_loadedTodo.ListOfTodosId, _loadedTodo.Id, TodoForUpdate);
 
         if (response.IsSuccessStatusCode)
         {
@@ -139,12 +135,12 @@
             //todo for AppState update
             var todo = new TodoDto()
             {
-                Id = _todoId,
-                ListOfTodosId = _listId,
+                Id = _loadedTodo.Id,
+                ListOfTodosId = _loadedTodo.ListOfTodosId,
                 Title = TodoForUpdate.Title,
                 Description = TodoForUpdate.Description,
                 IsDone = TodoForUpdate.IsDone,
-                DateAdded = _todoDateAdded
+                DateAdded = _loadedTodo.DateAdded
             };
 
             AppState.UpdateTodo(todo);
@@ -164,11 +160,12 @@
 
     private async Task DeleteTodoAsync()
     {
-        var response = await TodosService.DeleteTodo(_listId, _todoId);
+        var response = await TodosService.DeleteTodo(_loadedTodo.ListOfTodosId, _loadedTodo.Id);
 
         if (response.IsSuccessStatusCode)
         {
             _deleteFailed = false;
+            AppState.DeleteTodo(_loadedTodo);
             await OnTodoUpdated.InvokeAsync();
             Close();
         }
