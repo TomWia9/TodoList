@@ -21,6 +21,10 @@
             {
                 <div class="spinner-border spinner-border-sm"></div>
             }
+            else if (!AppState.ListsOfTodos.Any() && AppState.NumberOfAllIncompletedTodos == 0)
+            {
+                <strong>You don't have any lists, create a new one using the side menu</strong>
+            }
             else
             {
                 <h4>You have @AppState.NumberOfAllIncompletedTodos undone todos</h4>

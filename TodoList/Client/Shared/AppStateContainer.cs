@@ -34,7 +34,7 @@ namespace TodoList.Client.Shared
             NotifyStateChanged();
         }
 
-        public void RemoveListOfTodos(int listId)
+        public void DeleteListOfTodos(int listId)
         {
 
             var lists = ListsOfTodos.ToList();
@@ -42,8 +42,17 @@ namespace TodoList.Client.Shared
 
             lists.Remove(listToRemove);
             ListsOfTodos = lists;
-            GetNumberOfAllIncompletedTodos();
-            NotifyStateChanged();
+            
+            if (!ListsOfTodos.Any())
+            {
+                NoListsExists();
+            }
+            else
+            {
+                GetNumberOfAllIncompletedTodos();
+                NotifyStateChanged();
+            }
+
         }
 
         public void UpdateListTitle(int listId, string newTitle)
@@ -122,6 +131,14 @@ namespace TodoList.Client.Shared
             NotifyStateChanged();
         }
 
+
+        public void NoListsExists()
+        {
+            NumberOfAllIncompletedTodos = 0;
+            ListsOfTodos = new List<ListOfTodosDto>();
+            NotifyStateChanged();
+        }
+        
         private void NotifyStateChanged() => OnListsUpdate?.Invoke();
 
         private void GetNumberOfAllIncompletedTodos()

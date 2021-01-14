@@ -10,16 +10,16 @@
         </div>
     }
 
-    <div class="main">
-        @if (AuthenticationService.User != null)
-        {
-            <div class="top-row px-4">
-                <a href="https://github.com/TomWia9/TodoList" target="_blank" class="ml-md-auto">Visit the repository on Github</a>
-            </div>
-        }
+<div class="main">
 
-        <div class="content px-4">
-            @Body
-        </div>
+    <div class="top-row px-4">
+        <NavLink class="ml-md-auto" href="swagger">
+            <span class="oi oi-arrow-thick-right" aria-hidden="true"></span> Swagger
+        </NavLink>
     </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
 </div>
