@@ -9,10 +9,5 @@ namespace TodoList.Shared.Dto
 {
     public class ListOfTodosForCreationDto : ListOfTodosForManipulationDto
     {
-        /// <summary>
-        /// The id of user which this todo list belongs
-        /// </summary>
-        [Required]
-        public int UserId { get; set; }
     }
 }

@@ -23,9 +23,6 @@ namespace TodoList.Client.Pages
         protected ITodoListsService TodoListsService { get; set; }
         [Inject]
         protected AppStateContainer AppState { get; set; }
-        
-        [Inject] 
-        protected ILocalStorageService LocalStorageService { get; set; }
 
         protected ListOfTodosForCreationDto ListOfTodos { get; set; } = new();
         protected bool CreationFailed { get; set; }
@@ -33,10 +30,6 @@ namespace TodoList.Client.Pages
 
         protected async Task CreateList()
         {
-            var user = await LocalStorageService.GetItem<AuthenticateResponse>("user");
-
-            ListOfTodos.UserId = user.Id;
-
             var response = await TodoListsService.CreateList(ListOfTodos);
 
             if (response.StatusCode == HttpStatusCode.Conflict)

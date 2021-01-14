@@ -59,6 +59,8 @@ namespace TodoList.Server.Controllers
                 }
 
                 var newListOfTodos = _mapper.Map<ListOfTodos>(listOfTodos);
+                newListOfTodos.UserId = userId;
+                
                 _dbRepository.Add(newListOfTodos);
 
                 if(await _dbRepository.SaveChangesAsync())
