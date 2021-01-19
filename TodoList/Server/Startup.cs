@@ -81,7 +81,7 @@ namespace TodoList.Server
                     "TodoListOpenAPISepcification",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
-                        Title = "HotelManagement API",
+                        Title = "TodoList API",
                         Version = "1",
                         Description = "Through this API you can access todos lists and todos",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
