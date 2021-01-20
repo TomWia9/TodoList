@@ -59,6 +59,7 @@ namespace TodoList.Client.Components
                 if (list != null)
                 {
                     ListOfTodos = list;
+                    ListOfTodos.Todos = ListOfTodos.Todos.OrderBy(t => t.IsDone).ThenByDescending(t => t.DateAdded);
                 }
                 else
                 {
