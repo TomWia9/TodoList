@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Shared
@@ -17,7 +16,7 @@ namespace TodoList.Client.Shared
         {
             return ListsOfTodos.FirstOrDefault(l => l.Id == listId);
         }
-        
+
         public void AddListsOfTodos(IEnumerable<ListOfTodosDto> listsOfTodos)
         {
             ListsOfTodos = listsOfTodos;
@@ -42,7 +41,7 @@ namespace TodoList.Client.Shared
 
             lists.Remove(listToRemove);
             ListsOfTodos = lists;
-            
+
             if (!ListsOfTodos.Any())
             {
                 NoListsExists();
@@ -60,10 +59,10 @@ namespace TodoList.Client.Shared
 
             var lists = ListsOfTodos.ToList();
             var index = lists.FindIndex(l => l.Id == listId);
-            
+
             if (index > -1)
                 lists[index].Title = newTitle;
-            
+
             ListsOfTodos = lists;
             NotifyStateChanged();
         }
@@ -138,7 +137,7 @@ namespace TodoList.Client.Shared
             ListsOfTodos = new List<ListOfTodosDto>();
             NotifyStateChanged();
         }
-        
+
         private void NotifyStateChanged() => OnListsUpdate?.Invoke();
 
         private void GetNumberOfAllIncompletedTodos()

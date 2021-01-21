@@ -1,18 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using TodoList.Client.Shared;
 using TodoList.Shared.Auth;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Services
 {
-    public class AuthenticationService :IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly NavigationManager _navigationManager;
         private readonly IHttpService _httpService;
@@ -43,7 +42,7 @@ namespace TodoList.Client.Services
                 Username = username,
                 Password = password
             };
-            
+
             var response = await _httpService.Post("api/users/authenticate", authenticateRequest);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)

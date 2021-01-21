@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Serilog;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
 using TodoList.Shared.Dto;
@@ -52,7 +48,7 @@ namespace TodoList.Server.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirst("id").Value);
-                
+
                 if (await _todoListsRepository.ListOfTodosExists(userId, listOfTodos.Title))
                 {
                     return Conflict();
@@ -60,17 +56,17 @@ namespace TodoList.Server.Controllers
 
                 var newListOfTodos = _mapper.Map<ListOfTodos>(listOfTodos);
                 newListOfTodos.UserId = userId;
-                
+
                 _dbRepository.Add(newListOfTodos);
 
-                if(await _dbRepository.SaveChangesAsync())
+                if (await _dbRepository.SaveChangesAsync())
                 {
                     return CreatedAtAction(nameof(GetTodoList), new { listOfTodosId = newListOfTodos.Id }, _mapper.Map<ListOfTodosDto>(newListOfTodos));
                 }
             }
             catch (Exception)
             {
-               return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
             }
 
             return BadRequest();
@@ -194,14 +190,14 @@ namespace TodoList.Server.Controllers
 
                 var listOfTodosToRemove = await _todoListsRepository.GetTodoListAsync(userId, listOfTodosId);
 
-                if(listOfTodosToRemove == null)
+                if (listOfTodosToRemove == null)
                 {
                     return NotFound();
                 }
 
                 _dbRepository.Remove(listOfTodosToRemove);
 
-                if(await _dbRepository.SaveChangesAsync())
+                if (await _dbRepository.SaveChangesAsync())
                 {
                     return NoContent();
                 }

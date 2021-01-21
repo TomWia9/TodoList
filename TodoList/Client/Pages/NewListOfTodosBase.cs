@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Components;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using TodoList.Client.Services;
 using TodoList.Client.Shared;
-using TodoList.Shared.Auth;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Pages

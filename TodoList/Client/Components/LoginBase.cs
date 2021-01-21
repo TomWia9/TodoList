@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using TodoList.Client.Helpers.ExtensionMethods;
 using TodoList.Client.Services;
 using TodoList.Shared.Auth;
 
@@ -13,10 +10,10 @@ namespace TodoList.Client.Components
     {
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
-        
+
         [Inject]
         protected IAuthenticationService AuthenticationService { get; set; }
-        
+
         protected AuthenticateRequest AuthenticateRequest = new();
         protected bool Loading;
         protected string Error;

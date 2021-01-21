@@ -1,7 +1,4 @@
-﻿using System.Runtime.Serialization;
-using TodoList.Shared.Dto;
-
-namespace TodoList.Shared.Auth
+﻿namespace TodoList.Shared.Auth
 {
     /// <summary>
     /// User with Id, Login and Token fields

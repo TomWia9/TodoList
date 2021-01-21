@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.JSInterop;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.JSInterop;
 
 namespace TodoList.Client.Services
 {

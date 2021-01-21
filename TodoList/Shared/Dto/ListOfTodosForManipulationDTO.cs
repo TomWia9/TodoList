@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TodoList.Shared.Dto
 {
-    public abstract class  ListOfTodosForManipulationDto
+    public abstract class ListOfTodosForManipulationDto
     {
         /// <summary>
         /// The title of todo list

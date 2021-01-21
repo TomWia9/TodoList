@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using TodoList.Client.Components.Modals;
 using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
@@ -14,7 +10,7 @@ namespace TodoList.Client.Components
     {
         [Parameter]
         public TodoDto Todo { get; set; }
-        
+
         [Parameter]
         public EventCallback OnUpdated { get; set; }
 

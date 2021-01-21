@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using TodoList.Client.Helpers.ExtensionMethods;
 using TodoList.Client.Services;
-using TodoList.Shared.Auth;
 using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Components
@@ -16,12 +12,12 @@ namespace TodoList.Client.Components
         [Inject]
         protected IAuthenticationService AuthenticationService { get; set; }
 
-        protected UserForCreationDto UserForCreation = new ();
+        protected UserForCreationDto UserForCreation = new();
         protected bool Loading;
         protected string Error;
         protected bool? RegisterFailed;
         protected bool UsernameConflict;
-        
+
         protected async Task HandleValidSubmit()
         {
             Loading = true;
@@ -47,9 +43,9 @@ namespace TodoList.Client.Components
                     RegisterFailed = false;
                     UsernameConflict = false;
                 }
-                
+
                 Loading = false;
-                
+
             }
             catch (Exception ex)
             {

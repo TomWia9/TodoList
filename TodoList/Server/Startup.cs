@@ -1,12 +1,15 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Serilog;
 using System;
@@ -14,15 +17,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using TodoList.Server.Models;
-using TodoList.Server.Repositories;
 using TodoList.Server.Filters;
 using TodoList.Server.Helpers;
+using TodoList.Server.Models;
+using TodoList.Server.Repositories;
 
 namespace TodoList.Server
 {
@@ -46,7 +44,7 @@ namespace TodoList.Server
                         new CamelCasePropertyNamesContractResolver();
                  })
                  .AddXmlDataContractSerializerFormatters();
-                 
+
             services.AddRazorPages();
             services.AddMvc(options =>
             {
@@ -133,8 +131,8 @@ namespace TodoList.Server
                 {
                     setupAction.IncludeXmlComments(d);
                 }
-                
-             
+
+
             });
 
             var key = Encoding.UTF8.GetBytes(Configuration.GetValue<string>("AppSettings:Secret"));

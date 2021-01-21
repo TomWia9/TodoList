@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TodoList.Server.Models;
 
 namespace TodoList.Server.Data.EntityConfiguration
@@ -15,7 +11,7 @@ namespace TodoList.Server.Data.EntityConfiguration
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Username)
-                .IsRequired() 
+                .IsRequired()
                 .HasMaxLength(20);
 
             builder.Property(u => u.Password)

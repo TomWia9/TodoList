@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+using TodoList.Server.Helpers;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
 using TodoList.Shared.Auth;
 using TodoList.Shared.Dto;
-using TodoList.Server.Helpers;
 
 namespace TodoList.Server.Controllers
 {

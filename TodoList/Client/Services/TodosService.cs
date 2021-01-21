@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using TodoList.Shared.Dto;
-using TodoList.Client.Helpers.ExtensionMethods;
 using TodoList.Client.Shared;
-using TodoList.Shared.Auth;
+using TodoList.Shared.Dto;
 
 namespace TodoList.Client.Services
 {

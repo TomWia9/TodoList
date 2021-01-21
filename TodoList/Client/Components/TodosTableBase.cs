@@ -1,11 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using TodoList.Client.Components.Modals;
-using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
 
@@ -29,7 +25,7 @@ namespace TodoList.Client.Components
         protected int NumberOfIncompletedTodos { get; set; }
         protected bool ListLoadFailed { get; set; }
         protected string PercentOfDoneTodos { get; set; } = "text-white";
-        
+
         protected DeleteListModal DeleteListModal;
         protected EditListTitleModal EditListTitleModal;
         protected TodoDetailsModal TodoDetailsModal;

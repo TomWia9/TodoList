@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Components;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using TodoList.Client.Services;
 using TodoList.Client.Shared;
 using TodoList.Shared.Dto;
@@ -24,11 +19,11 @@ namespace TodoList.Client.Components
         [Parameter]
         public int ListId { get; set; }
 
-        [Parameter] 
+        [Parameter]
         public EventCallback OnCreated { get; set; }
 
         protected TodoForCreationDto TodoForCreation { get; set; } = new();
-        protected  bool TodoAlreadyExists { get; set; }
+        protected bool TodoAlreadyExists { get; set; }
         protected bool CreationFailed { get; set; }
 
         protected override void OnParametersSet()
@@ -51,11 +46,11 @@ namespace TodoList.Client.Components
                 CreationFailed = true;
             }
             else
-            { 
+            {
                 CreationFailed = false;
                 var todo = await response.Content.ReadFromJsonAsync<TodoDto>();
                 AppState.AddTodo(todo);
-               await OnCreated.InvokeAsync();
+                await OnCreated.InvokeAsync();
             }
         }
     }

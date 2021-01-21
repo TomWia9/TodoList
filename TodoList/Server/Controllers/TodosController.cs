@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using TodoList.Server.Models;
 using TodoList.Server.Repositories;
 using TodoList.Shared.Dto;
@@ -70,7 +70,7 @@ namespace TodoList.Server.Controllers
                 if (await _dbRepository.SaveChangesAsync())
                 {
                     return CreatedAtAction(nameof(GetTodoOfList),
-                        new { listOfTodosId, todoId = newTodo.Id}, _mapper.Map<TodoDto>(newTodo));
+                        new { listOfTodosId, todoId = newTodo.Id }, _mapper.Map<TodoDto>(newTodo));
                 }
             }
 
@@ -131,7 +131,7 @@ namespace TodoList.Server.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirst("id").Value);
-                
+
                 if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
@@ -284,21 +284,21 @@ namespace TodoList.Server.Controllers
             {
                 var userId = int.Parse(User.FindFirst("id").Value);
 
-                if (! await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
+                if (!await _todoListsRepository.ListOfTodosExists(userId, listOfTodosId))
                 {
                     return NotFound();
                 }
 
                 var todoToRemove = await _todoRepository.GetTodoAsync(listOfTodosId, todoId);
 
-                if(todoToRemove == null)
+                if (todoToRemove == null)
                 {
                     return NotFound();
                 }
 
                 _dbRepository.Remove(todoToRemove);
 
-                if(await _dbRepository.SaveChangesAsync())
+                if (await _dbRepository.SaveChangesAsync())
                 {
                     return NoContent();
                 }
