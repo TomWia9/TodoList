@@ -86,7 +86,7 @@ For more documentation data, visit
 ## Installation
 Make sure you have the **.NET 5.0 SDK** installed on your machine. Then do:  
 >`git clone https://github.com/TomWia9/TodoList.git`  
-`cd TodoList\TodoList\`  
+`cd TodoList\TodoList\Server`  
 `dotnet run`
 
 ## Configuration
